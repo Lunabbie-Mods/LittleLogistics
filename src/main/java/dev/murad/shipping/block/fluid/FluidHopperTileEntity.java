@@ -4,6 +4,8 @@ import dev.murad.shipping.block.IVesselLoader;
 import dev.murad.shipping.setup.ModTileEntitiesTypes;
 import dev.murad.shipping.util.FluidDisplayUtil;
 import dev.murad.shipping.util.LinkableEntity;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,13 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,7 +39,7 @@ public class FluidHopperTileEntity extends BlockEntity implements IVesselLoader 
         };
     };
 
-    private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
+    private final LazyOptional<FluidHandler> holder = LazyOptional.of(() -> tank);
 
 
 

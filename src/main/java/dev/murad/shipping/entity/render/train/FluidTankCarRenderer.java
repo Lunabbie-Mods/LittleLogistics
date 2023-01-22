@@ -5,13 +5,13 @@ import com.mojang.math.Vector3f;
 import dev.murad.shipping.entity.custom.vessel.barge.FluidTankBargeEntity;
 import dev.murad.shipping.entity.custom.train.wagon.FluidTankCarEntity;
 import dev.murad.shipping.util.FluidRenderUtil;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.function.Function;
 

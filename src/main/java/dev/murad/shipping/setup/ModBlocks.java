@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.registries.RegistryObject;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 
 import java.util.function.Supplier;
 

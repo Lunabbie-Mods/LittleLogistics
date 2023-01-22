@@ -6,12 +6,12 @@ import dev.murad.shipping.ShippingMod;
 import dev.murad.shipping.entity.custom.vessel.barge.FluidTankBargeEntity;
 import dev.murad.shipping.entity.models.FluidTankBargeModel;
 import dev.murad.shipping.util.FluidRenderUtil;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 public class FluidTankBargeRenderer extends AbstractVesselRenderer<FluidTankBargeEntity> {
     private static final ResourceLocation BARGE_TEXTURE =

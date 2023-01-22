@@ -7,11 +7,10 @@ import dev.murad.shipping.entity.custom.train.locomotive.SteamLocomotiveEntity;
 import dev.murad.shipping.entity.custom.vessel.tug.EnergyTugEntity;
 import dev.murad.shipping.entity.custom.vessel.tug.SteamTugEntity;
 import dev.murad.shipping.item.container.TugRouteContainer;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModMenuTypes {
 

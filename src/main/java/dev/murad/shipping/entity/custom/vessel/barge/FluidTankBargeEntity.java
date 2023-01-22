@@ -4,7 +4,11 @@ import dev.murad.shipping.entity.custom.vessel.tug.AbstractTugEntity;
 import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.FluidDisplayUtil;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,15 +21,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -107,7 +102,7 @@ public class FluidTankBargeEntity extends AbstractBargeEntity{
                 tank.setFluid(new FluidStack(clientCurrFluid, clientCurrAmount));
             } else if (FLUID_TYPE.equals(key)) {
                 ResourceLocation fluidName = new ResourceLocation(entityData.get(FLUID_TYPE));
-                clientCurrFluid = ForgeRegistries.FLUIDS.getValue(fluidName);
+                clientCurrFluid = Registry.FLUID.getValue(fluidName);
                 tank.setFluid(new FluidStack(clientCurrFluid, clientCurrAmount));
             }
         }

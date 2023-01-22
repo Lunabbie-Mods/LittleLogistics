@@ -1,265 +1,27 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven { url = 'https://cursemaven.com' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.parchmentmc:librarian:1.+'
-        classpath 'org.spongepowered:mixingradle:0.7.+'
-    }
-}
-
 plugins {
+    id 'fabric-loom' version '1.0-SNAPSHOT'
+    id 'maven-publish'
     id "io.freefair.lombok" version "6.4.1"
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
-apply plugin: 'org.spongepowered.mixin'
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
-
-group = mod_group // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = mod_id
-version = "mc${mc_version}-v${mod_version}"
-
-java.toolchain.languageVersion = JavaLanguageVersion.of(17) // Mojang ships Java 17 to end users, so your mod should target Java 17.
-
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // Channel:   Version:
-    // snapshot   YYYYMMDD   Snapshot are built nightly.
-    // stable     #          Stables are built at the discretion of the MCP team.
-    // official   MCVersion  Official field/method names from Mojang mapping files
-    //
-    // You must be aware of the Mojang license when using the 'official' mappings.
-    // See more information here: https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-    //
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: mappings_channel, version: mappings_version
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-    
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            // The markers can be changed as needed.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                "${project.mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            // The markers can be changed as needed.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                "${project.mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            // The markers can be changed as needed.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-
-
-            forceExit = false
-
-            args '--mod', "${project.mod_id}", '--all',
-                    '--existing', file('src/main/resources').toString(),
-                    '--existing', file('src/generated/resources').toString(),
-                    '--output', file('src/generated/resources/')
-
-            mods {
-                "${project.mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
-}
-
-// Include resources generated by data generators.
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-
-dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
-
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
-
-    // Real examples
-    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // These dependencies get remapped to your current MCP mappings
-    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    // compile against the JEI API but do not include it at runtime
-//    // at runtime, use the full JEI jar
-//
-//    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
-//    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
-//    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
-//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
-//
-//    runtimeOnly fg.deobf("com.teamcofh:cofh_core:1.16.5-1.4.2.9")
-//    runtimeOnly fg.deobf("com.teamcofh:thermal_foundation:1.16.5-1.4.3.10")
-//    runtimeOnly fg.deobf("com.teamcofh:thermal_expansion:1.16.5-1.4.2.4")
-
-    // spark
-    runtimeOnly fg.deobf("curse.maven:spark-361579:3875647")
-
-    // create
-    runtimeOnly fg.deobf("curse.maven:create-328085:4011414")
-    compileOnly fg.deobf("curse.maven:create-328085:4011414")
-
-//    compileOnly fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:${rootProject.flywheel_version}")
-//    compileOnly fg.deobf("com.simibubi.create:Create:${rootProject.create_version}")
-//    runtimeOnly fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:${rootProject.flywheel_version}")
-//    runtimeOnly fg.deobf("com.simibubi.create:Create:${rootProject.create_version}")
-}
-
-// Example for how to get properties into the manifest for reading by the runtime..
-jar {
-    manifest {
-        attributes([
-            "Specification-Title": mod_id,
-            "Specification-Vendor": mod_author,
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": mod_version,
-            "Implementation-Vendor" : mod_author,
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
-}
-
-// Example configuration to allow publishing using the maven-publish task
-// This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
-// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
-//publish.dependsOn('reobfJar')
-
-processResources {
-    inputs.property "version", project.mod_version
-    filteringCharset "UTF-8"
-
-    // will replace ${} strings inside mods.toml
-    filesMatching("META-INF/mods.toml") {
-        expand  "mod_id":                   project.mod_id,
-                "mod_version":              project.mod_version,
-                "mod_icon_path":            project.mod_icon_path,
-                "mod_title":                project.mod_title,
-                "mod_description":          project.mod_description,
-                "mod_url":                  project.mod_url,
-                "mod_author":               project.mod_author,
-                "mod_license":              project.mod_license,
-                "mc_version_range":         project.mc_version_range,
-                "forge_version_range":      project.forge_version_range,
-                "patchouli_version_range":  project.patchouli_version_range
-    }
-    filesMatching("pack.mcmeta") {
-        expand "mod_id": project.mod_id
-    }
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
-
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/MuradAkh/LittleLogistics")
-
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-
-        maven {
-            name = "edtoaster.ca"
-            url = uri("https://maven.edtoaster.ca/")
-
-            credentials {
-                username = System.getenv("EDTOASTER_MAVEN_USER")
-                password = System.getenv("EDTOASTER_MAVEN_PASS")
-            }
-        }
-    }
-}
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
 
 repositories {
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
+    maven {
+        // Create, Porting Lib, Forge Tags, Milk Lib, Registrate
+        url = "https://mvn.devos.one/snapshots/"
+    }
+
     maven {
         // JEI
         name = "Progwml6 maven"
@@ -272,14 +34,91 @@ repositories {
         url 'https://maven.blamejared.com'
     }
 
+    maven { url = "https://maven.tterrag.com/" } // Flywheel
+
     maven {
-        // Create and Flywheel
-        name 'tterrag maven'
-        url 'https://maven.tterrag.com'
+        // mixin extras & fabric asm
+        url = "https://jitpack.io"
+        content {
+            includeGroup("com.github.Chocohead")
+            includeGroup("com.github.LlamaLad7")
+        }
     }
 
     maven {
-        name 'curseforge'
-        url 'https://cursemaven.com'
+        // forge config api port
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
+
+    maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
+    maven { url = "https://api.modrinth.com/maven" } // LazyDFU
+    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
+    maven { url = "https://cursemaven.com" } // Forge Config API Port
+    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
+}
+
+dependencies {
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    // Fabric API. This is technically optional, but you probably want it anyway.
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Uncomment the following line to enable the deprecated Fabric API modules.
+    // These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
+
+    // modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+    modImplementation(include("io.github.fabricators_of_create.Porting-Lib:porting-lib:${project.porting_lib_version}"))
+
+    modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${project.forge_config_api_version}"
+
+    include modApi("teamreborn:energy:${project.tr_energy_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    //modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}")
+}
+
+processResources {
+    filesMatching("fabric.mod.json") {
+        expand project.properties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    // Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
+    it.options.release = 17
+}
+
+java {
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    withSourcesJar()
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
+}
+
+// configure the maven publication
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
     }
 }

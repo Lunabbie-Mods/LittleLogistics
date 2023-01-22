@@ -4,10 +4,8 @@ import dev.murad.shipping.ShippingMod;
 import dev.murad.shipping.entity.custom.HeadVehicle;
 import dev.murad.shipping.entity.custom.train.locomotive.AbstractLocomotiveEntity;
 import dev.murad.shipping.global.PlayerTrainChunkManager;
+import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

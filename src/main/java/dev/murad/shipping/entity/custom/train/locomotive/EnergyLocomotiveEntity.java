@@ -6,7 +6,6 @@ import dev.murad.shipping.entity.accessor.EnergyHeadVehicleDataAccessor;
 import dev.murad.shipping.entity.container.EnergyHeadVehicleContainer;
 import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
-import dev.murad.shipping.util.EnrollmentHandler;
 import dev.murad.shipping.util.InventoryUtils;
 import dev.murad.shipping.util.ItemHandlerVanillaContainerWrapper;
 import net.minecraft.core.Direction;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
@@ -111,9 +109,9 @@ public class EnergyLocomotiveEntity extends AbstractLocomotiveEntity implements 
     @Override
     public EnergyHeadVehicleDataAccessor getDataAccessor() {
         return (EnergyHeadVehicleDataAccessor) new EnergyHeadVehicleDataAccessor.Builder()
-                .withEnergy(internalBattery::getEnergyStored)
-                .withCapacity(internalBattery::getMaxEnergyStored)
-                .withLit(() -> internalBattery.getEnergyStored() > 0) // has energy
+                .withEnergy(internalBattery::getAmount)
+                .withCapacity(internalBattery::getCapacity)
+                .withLit(() -> internalBattery.getAmount() > 0) // has energy
                 .withId(this.getId())
                 .withOn(() -> engineOn)
                 .withRouteSize(() -> navigator.getRouteSize())
@@ -130,7 +128,7 @@ public class EnergyLocomotiveEntity extends AbstractLocomotiveEntity implements 
             if (capability != null) {
                 // simulate first
                 int toExtract = capability.extractEnergy(MAX_TRANSFER, true);
-                toExtract = internalBattery.receiveEnergy(toExtract, false);
+                toExtract = internalBattery.insert(toExtract, false);
                 capability.extractEnergy(toExtract, false);
             }
         }
@@ -140,7 +138,7 @@ public class EnergyLocomotiveEntity extends AbstractLocomotiveEntity implements 
 
     @Override
     protected boolean tickFuel() {
-        return internalBattery.extractEnergy(ENERGY_USAGE, false) > 0;
+        return internalBattery.extract(ENERGY_USAGE, false) > 0;
     }
 
 

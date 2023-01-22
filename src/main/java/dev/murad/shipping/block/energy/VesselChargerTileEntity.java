@@ -15,10 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,7 +24,7 @@ public class VesselChargerTileEntity extends BlockEntity implements IVesselLoade
     private static final int MAX_TRANSFER = ShippingConfig.Server.VESSEL_CHARGER_BASE_MAX_TRANSFER.get();
     private static final int MAX_CAPACITY = ShippingConfig.Server.VESSEL_CHARGER_BASE_CAPACITY.get();
     private final ReadWriteEnergyStorage internalBattery = new ReadWriteEnergyStorage(MAX_CAPACITY, MAX_TRANSFER, MAX_TRANSFER);
-    private final LazyOptional<IEnergyStorage> holder = LazyOptional.of(() -> internalBattery);
+    private final LazyOptional<EnergyStorage> holder = LazyOptional.of(() -> internalBattery);
     private int cooldownTime = 0;
 
     public VesselChargerTileEntity(BlockPos pos, BlockState state) {
@@ -62,7 +59,7 @@ public class VesselChargerTileEntity extends BlockEntity implements IVesselLoade
         return IVesselLoader.getEntityCapability(getBlockPos().relative(getBlockState().getValue(VesselChargerBlock.FACING)),
                 CapabilityEnergy.ENERGY, level).map(iEnergyStorage -> {
                     int vesselCap = iEnergyStorage.receiveEnergy(MAX_TRANSFER, true);
-                    int toTransfer = internalBattery.extractEnergy(vesselCap, false);
+                    int toTransfer = internalBattery.extract(vesselCap, false);
                     return iEnergyStorage.receiveEnergy(toTransfer, false) > 0;
         }).orElse(false);
     }
@@ -86,7 +83,7 @@ public class VesselChargerTileEntity extends BlockEntity implements IVesselLoade
         return vehicle.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> {
             switch (mode) {
                 case EXPORT:
-                    return (energyHandler.getEnergyStored() < energyHandler.getMaxEnergyStored() - 50) && internalBattery.getEnergyStored() > 50;
+                    return (energyHandler.getEnergyStored() < energyHandler.getMaxEnergyStored() - 50) && internalBattery.getAmount() > 50;
                 default:
                     return false;
             }
@@ -95,6 +92,6 @@ public class VesselChargerTileEntity extends BlockEntity implements IVesselLoade
 
     public void use(Player player, InteractionHand hand) {
         player.displayClientMessage(Component.translatable("block.littlelogistics.vessel_charger.capacity",
-                internalBattery.getEnergyStored(), internalBattery.getMaxEnergyStored()), false);
+                internalBattery.getAmount(), internalBattery.getCapacity()), false);
     }
 }

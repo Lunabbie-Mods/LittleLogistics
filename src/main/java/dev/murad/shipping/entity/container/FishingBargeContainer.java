@@ -2,11 +2,10 @@ package dev.murad.shipping.entity.container;
 
 import dev.murad.shipping.entity.custom.vessel.barge.FishingBargeEntity;
 import dev.murad.shipping.setup.ModMenuTypes;
+import io.github.fabricators_of_create.porting_lib.transfer.item.SlotItemHandler;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class FishingBargeContainer extends AbstractItemHandlerContainer {
     private final FishingBargeEntity fishingBargeEntity;

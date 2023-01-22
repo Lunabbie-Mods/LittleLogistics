@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+
+  "name": "${mod_title}",
+  "description": "${mod_description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contact": {
+    "homepage": "${mod_url}",
+    "sources": "${mod_sources}"
+  },
+
+  "license": "${mod_license}",
+  "icon": "${mod_icon_path}",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.murad.shipping.ShippingMod"
+    ],
+    "client": [
+      "dev.murad.shipping.ShippingModClient"
+    ]
+  },
+  "mixins": [
+    "littlelogistics.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.11",
+    "fabric-api": "*",
+    "minecraft": "~1.19.2",
+    "java": ">=17",
+    "patchouli": "1.18.2-66"
+  },
+  "accessWidener": "littlelogistics.accesswidener"
+}

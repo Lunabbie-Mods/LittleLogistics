@@ -9,6 +9,7 @@ import dev.murad.shipping.item.container.TugRouteScreen;
 import dev.murad.shipping.setup.ModItemModelProperties;
 import dev.murad.shipping.setup.ModMenuTypes;
 import dev.murad.shipping.setup.Registration;
+import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,14 +21,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(ShippingMod.MOD_ID)
-public class ShippingMod
+public class ShippingMod implements ModInitializer
 {
     public static final String MOD_ID = "littlelogistics";
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public ShippingMod() {
+    public void onInitialize() {
         Registration.register();
 
         // Register the doClientStuff method for modloading
@@ -41,15 +41,4 @@ public class ShippingMod
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        MenuScreens.register(ModMenuTypes.TUG_CONTAINER.get(), SteamHeadVehicleScreen<SteamTugEntity>::new);
-        MenuScreens.register(ModMenuTypes.STEAM_LOCOMOTIVE_CONTAINER.get(), SteamHeadVehicleScreen<SteamLocomotiveEntity>::new);
-        MenuScreens.register(ModMenuTypes.ENERGY_TUG_CONTAINER.get(),  EnergyHeadVehicleScreen<EnergyTugEntity>::new);
-        MenuScreens.register(ModMenuTypes.ENERGY_LOCOMOTIVE_CONTAINER.get(), EnergyHeadVehicleScreen<EnergyLocomotiveEntity>::new);
-        MenuScreens.register(ModMenuTypes.FISHING_BARGE_CONTAINER.get(), FishingBargeScreen::new);
-
-        MenuScreens.register(ModMenuTypes.TUG_ROUTE_CONTAINER.get(), TugRouteScreen::new);
-
-        event.enqueueWork(ModItemModelProperties::register);
-    }
 }

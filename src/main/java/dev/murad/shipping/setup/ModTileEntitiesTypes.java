@@ -8,10 +8,10 @@ import dev.murad.shipping.block.rail.blockentity.LocomotiveDockTileEntity;
 import dev.murad.shipping.block.rail.blockentity.TrainCarDockTileEntity;
 import dev.murad.shipping.block.rapidhopper.RapidHopperTileEntity;
 import dev.murad.shipping.block.vesseldetector.VesselDetectorTileEntity;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModTileEntitiesTypes {
     public static final RegistryObject<BlockEntityType<TugDockTileEntity>> TUG_DOCK = register(

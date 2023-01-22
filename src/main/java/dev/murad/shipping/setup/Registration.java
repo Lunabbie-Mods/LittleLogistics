@@ -4,6 +4,7 @@ import dev.murad.shipping.ShippingMod;
 import dev.murad.shipping.network.VehiclePacketHandler;
 import dev.murad.shipping.network.TugRoutePacketHandler;
 import dev.murad.shipping.network.client.VehicleTrackerPacketHandler;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
@@ -11,25 +12,20 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 
 public class Registration  {
-    public static final DeferredRegister<Block> BLOCKS = create(ForgeRegistries.BLOCKS);
-    public static final DeferredRegister<MenuType<?>> CONTAINERS = create(ForgeRegistries.MENU_TYPES);
-    public static final DeferredRegister<EntityType<?>> ENTITIES = create(ForgeRegistries.ENTITY_TYPES);
-    public static final DeferredRegister<Item> ITEMS = create(ForgeRegistries.ITEMS);
-    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = create(ForgeRegistries.RECIPE_SERIALIZERS);
-    public static final DeferredRegister<BlockEntityType<?>> TILE_ENTITIES = create(ForgeRegistries.BLOCK_ENTITY_TYPES);
-    public static final DeferredRegister<SoundEvent> SOUND_EVENTS = create(ForgeRegistries.SOUND_EVENTS);
+    public static final LazyRegistrar<Block> BLOCKS = create(Registry.BLOCK);
+    public static final LazyRegistrar<MenuType<?>> CONTAINERS = create(Registry.MENU);
+    public static final LazyRegistrar<EntityType<?>> ENTITIES = create(Registry.ENTITY_TYPE);
+    public static final LazyRegistrar<Item> ITEMS = create(Registry.ITEM);
+    public static final LazyRegistrar<RecipeSerializer<?>> RECIPE_SERIALIZERS = create(Registry.RECIPE_SERIALIZER);
+    public static final LazyRegistrar<BlockEntityType<?>> TILE_ENTITIES = create(Registry.BLOCK_ENTITY_TYPE);
+    public static final LazyRegistrar<SoundEvent> SOUND_EVENTS = create(Registry.SOUND_EVENT);
 
 
-    private static<T> DeferredRegister<T> create(IForgeRegistry<T> registry) {
-        return DeferredRegister.create(registry, ShippingMod.MOD_ID);
+    private static<T> LazyRegistrar<T> create(Registry<T> registry) {
+        return LazyRegistrar.create(registry, ShippingMod.MOD_ID);
     }
 
     public static void register () {

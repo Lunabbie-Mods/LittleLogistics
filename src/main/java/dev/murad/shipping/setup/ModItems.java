@@ -15,7 +15,7 @@ import dev.murad.shipping.item.creative.CreativeCapacitor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.RegistryObject;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 
 import java.util.Map;
 

@@ -1,9 +1,9 @@
 package dev.murad.shipping.util;
 
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class FluidDisplayUtil {
     public static Component getFluidDisplay(FluidTank tank) {

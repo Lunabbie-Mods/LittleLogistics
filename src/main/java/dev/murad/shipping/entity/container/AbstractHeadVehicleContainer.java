@@ -9,6 +9,7 @@ import dev.murad.shipping.network.EnrollVehiclePacket;
 import dev.murad.shipping.network.VehiclePacketHandler;
 import dev.murad.shipping.network.SetEnginePacket;
 import dev.murad.shipping.util.EnrollmentHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.SlotItemHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nullable;
 

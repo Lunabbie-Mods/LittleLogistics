@@ -1,9 +1,9 @@
 package dev.murad.shipping.setup;
 
 import dev.murad.shipping.ShippingMod;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.registries.RegistryObject;
 
 public class ModSounds {
 

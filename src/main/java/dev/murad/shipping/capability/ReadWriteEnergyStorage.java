@@ -1,13 +1,13 @@
 package dev.murad.shipping.capability;
 
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.energy.IEnergyStorage;
+import team.reborn.energy.api.EnergyStorage;
 
 /**
  * Re-implementation of EnergyStorage so we can read and write it from/to NBT data
  */
-public class ReadWriteEnergyStorage implements IEnergyStorage {
+public class ReadWriteEnergyStorage implements EnergyStorage {
     public static final String ENERGY_TAG = "energy";
 
     private final int maxCapacity, maxReceive, maxExtract;
@@ -36,36 +36,36 @@ public class ReadWriteEnergyStorage implements IEnergyStorage {
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
-        compound.putInt(ENERGY_TAG, proxyStorage.getEnergyStored());
+        compound.putFloat(ENERGY_TAG, proxyStorage.getAmount());
     }
 
     @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        return proxyStorage.receiveEnergy(maxReceive, simulate);
+    public long insert(long maxAmount, TransactionContext transaction) {
+        return proxyStorage.insert(maxReceive, simulate);
     }
 
     @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        return proxyStorage.extractEnergy(maxExtract, simulate);
+    public long extract(long maxAmount, TransactionContext transaction) {
+        return proxyStorage.extract(maxExtract, simulate);
     }
 
     @Override
-    public int getEnergyStored() {
-        return proxyStorage.getEnergyStored();
+    public long getAmount() {
+        return proxyStorage.getAmount();
     }
 
     @Override
-    public int getMaxEnergyStored() {
-        return proxyStorage.getMaxEnergyStored();
+    public long getCapacity() {
+        return proxyStorage.getCapacity();
     }
 
     @Override
-    public boolean canExtract() {
-        return proxyStorage.canExtract();
+    public boolean supportsExtraction() {
+        return proxyStorage.supportsExtraction();
     }
 
     @Override
-    public boolean canReceive() {
-        return proxyStorage.canReceive();
+    public boolean supportsInsertion() {
+        return proxyStorage.supportsInsertion();
     }
 }

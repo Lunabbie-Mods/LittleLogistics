@@ -107,9 +107,9 @@ public class EnergyTugEntity extends AbstractTugEntity {
     @Override
     public EnergyHeadVehicleDataAccessor getDataAccessor() {
         return (EnergyHeadVehicleDataAccessor) new EnergyHeadVehicleDataAccessor.Builder()
-                .withEnergy(internalBattery::getEnergyStored)
-                .withCapacity(internalBattery::getMaxEnergyStored)
-                .withLit(() -> internalBattery.getEnergyStored() > 0) // has energy
+                .withEnergy(internalBattery::getAmount)
+                .withCapacity(internalBattery::getCapacity)
+                .withLit(() -> internalBattery.getAmount() > 0) // has energy
                 .withId(this.getId())
                 .withVisitedSize(() -> nextStop)
                 .withOn(() -> engineOn)
@@ -148,7 +148,7 @@ public class EnergyTugEntity extends AbstractTugEntity {
             if (capability != null) {
                 // simulate first
                 int toExtract = capability.extractEnergy(MAX_TRANSFER, true);
-                toExtract = internalBattery.receiveEnergy(toExtract, false);
+                toExtract = internalBattery.insert(toExtract, false);
                 capability.extractEnergy(toExtract, false);
             }
         }
@@ -158,7 +158,7 @@ public class EnergyTugEntity extends AbstractTugEntity {
 
     @Override
     protected boolean tickFuel() {
-        return internalBattery.extractEnergy(ENERGY_USAGE, false) > 0;
+        return internalBattery.extract(ENERGY_USAGE, false) > 0;
     }
 
     @Override

@@ -1,16 +1,14 @@
 package dev.murad.shipping.util;
 
 import dev.murad.shipping.entity.custom.vessel.tug.AbstractTugEntity;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import team.reborn.energy.api.EnergyStorage;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -88,12 +86,12 @@ public class InventoryUtils {
     }
 
     @Nullable
-    public static IEnergyStorage getEnergyCapabilityInSlot(int slot, ItemStackHandler handler) {
+    public static EnergyStorage getEnergyCapabilityInSlot(int slot, ItemStackHandler handler) {
         ItemStack stack = handler.getStackInSlot(slot);
         if (!stack.isEmpty()) {
-            LazyOptional<IEnergyStorage> capabilityLazyOpt = stack.getCapability(CapabilityEnergy.ENERGY);
+            LazyOptional<EnergyStorage> capabilityLazyOpt = stack.getCapability(CapabilityEnergy.ENERGY);
             if (capabilityLazyOpt.isPresent()) {
-                Optional<IEnergyStorage> capabilityOpt = capabilityLazyOpt.resolve();
+                Optional<EnergyStorage> capabilityOpt = capabilityLazyOpt.resolve();
                 if (capabilityOpt.isPresent()) {
                     return capabilityOpt.get();
                 }

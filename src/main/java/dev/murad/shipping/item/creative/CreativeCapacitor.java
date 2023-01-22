@@ -1,53 +1,51 @@
 package dev.murad.shipping.item.creative;
 
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.world.item.Item.Properties;
+import team.reborn.energy.api.EnergyStorage;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 
 public class CreativeCapacitor extends Item {
     public CreativeCapacitor(Properties props) {
         super(props);
     }
 
-    static class CreativeEnergyStorage implements IEnergyStorage {
+    static class CreativeEnergyStorage implements EnergyStorage {
         @Override
-        public int receiveEnergy(int maxReceive, boolean simulate) {
+        public long insert(long maxReceive, TransactionContext transactionContext) {
             return maxReceive;
         }
 
         @Override
-        public int extractEnergy(int maxExtract, boolean simulate) {
+        public long extract(long maxExtract, TransactionContext transactionContext) {
             return maxExtract;
         }
 
-        @Override
-        public int getEnergyStored() {
-            return Integer.MAX_VALUE;
+        @Overridej
+        public long getAmount() {
+            return Long.MAX_VALUE;
         }
 
         @Override
-        public int getMaxEnergyStored() {
-            return Integer.MAX_VALUE;
+        public long getCapacity() {
+            return Long.MAX_VALUE;
         }
 
         @Override
-        public boolean canExtract() {
+        public boolean supportsExtraction() {
             return true;
         }
 
         @Override
-        public boolean canReceive() {
+        public boolean supportsInsertion() {
             return true;
         }
     }
