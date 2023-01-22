@@ -18,13 +18,13 @@ public class EnergyHeadVehicleDataAccessor extends HeadVehicleDataAccessor {
      * Lil-endian
      */
 
-    public int getEnergy() {
+    public long getEnergy() {
         int lo = this.data.get(15) & SHORT_MASK;
         int hi = this.data.get(16) & SHORT_MASK;
         return lo | hi << 16;
     }
 
-    public int getCapacity() {
+    public long getCapacity() {
         int lo = this.data.get(17) & SHORT_MASK;
         int hi = this.data.get(18) & SHORT_MASK;
         return lo | hi << 16;

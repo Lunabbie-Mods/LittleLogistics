@@ -3,10 +3,10 @@ package dev.murad.shipping.setup;
 import dev.murad.shipping.item.LocoRouteItem;
 import dev.murad.shipping.item.TugRouteItem;
 import dev.murad.shipping.recipe.AbstractRouteCopyRecipe;
+import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
-import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
 

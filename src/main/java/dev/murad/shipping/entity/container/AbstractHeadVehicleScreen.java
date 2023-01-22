@@ -36,17 +36,17 @@ public abstract class AbstractHeadVehicleScreen<U extends Entity & HeadVehicle, 
     @Override
     protected void init() {
         super.init();
-        on = new Button(this.getGuiLeft() + 130, this.getGuiTop() + 25, 20, 20,
+        on = new Button(this.leftPos + 130, this.topPos + 25, 20, 20,
                 Component.literal("\u23F5"),
                 pButton -> menu.setEngine(true),
                 getTooltip(Component.translatable("screen.littlelogistics.locomotive.on")));
 
-        off = new Button(this.getGuiLeft() + 96, this.getGuiTop() + 25, 20, 20,
+        off = new Button(this.leftPos + 96, this.topPos + 25, 20, 20,
                 Component.literal("\u23F8"),
                 pButton -> menu.setEngine(false),
                 getTooltip(Component.translatable("screen.littlelogistics.locomotive.off")));
 
-        register = new Button(this.getGuiLeft() + 181, this.getGuiTop() + 20, 77, 20,
+        register = new Button(this.leftPos + 181, this.topPos + 20, 77, 20,
                 Component.translatable("screen.littlelogistics.locomotive.register"),
                 pButton -> menu.enroll(),
                 getTooltip(Component.translatable("screen.littlelogistics.locomotive.register")));
@@ -60,22 +60,22 @@ public abstract class AbstractHeadVehicleScreen<U extends Entity & HeadVehicle, 
     @Override
     public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.font.draw(matrixStack, Component.translatable("screen.littlelogistics.locomotive.route"), this.getGuiLeft() + 120, this.getGuiTop() + 55, 4210752);
+        this.font.draw(matrixStack, Component.translatable("screen.littlelogistics.locomotive.route"), this.leftPos + 120, this.topPos + 55, 4210752);
 
-        this.font.drawShadow(matrixStack, Component.translatable("screen.littlelogistics.locomotive.registration"), this.getGuiLeft() + 180, this.getGuiTop() + 5, 16777215);
+        this.font.drawShadow(matrixStack, Component.translatable("screen.littlelogistics.locomotive.registration"), this.leftPos + 180, this.topPos + 5, 16777215);
         var text = this.font.split(Component.translatable("screen.littlelogistics.locomotive.register_info"), 90);
         for (int i = 0; i < text.size(); i++) {
-            this.font.draw(matrixStack, text.get(i), this.getGuiLeft() + 180, this.getGuiTop() + 48 + i * 10,16777215);
+            this.font.draw(matrixStack, text.get(i), this.leftPos + 180, this.topPos + 48 + i * 10,16777215);
         }
 
         if(!menu.canMove()) {
             var frozen = this.font.split(Component.translatable("screen.littlelogistics.locomotive.frozen"), 90);
             for (int i = 0; i < frozen.size(); i++) {
-                this.font.draw(matrixStack, frozen.get(i), this.getGuiLeft() + 180, this.getGuiTop() + 98 + i * 10, 16777215);
+                this.font.draw(matrixStack, frozen.get(i), this.leftPos + 180, this.topPos + 98 + i * 10, 16777215);
             }
         }
 
-        this.font.draw(matrixStack, menu.getRouteText(), this.getGuiLeft() + 120, this.getGuiTop() + 65, 4210752);
+        this.font.draw(matrixStack, menu.getRouteText(), this.leftPos + 120, this.topPos + 65, 4210752);
     }
 
     @Override
@@ -83,9 +83,9 @@ public abstract class AbstractHeadVehicleScreen<U extends Entity & HeadVehicle, 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, REGISTRATION);
-        int i = this.getGuiLeft() + 175;
-        int j = this.getGuiTop();
-        this.blit(pPoseStack, i, j, 0, 0, this.getXSize(), this.getYSize());
+        int i = this.leftPos + 175;
+        int j = this.topPos;
+        this.blit(pPoseStack, i, j, 0, 0, this.width, this.height);
         off.active = menu.isOn();
         on.active = !menu.isOn();
         register.active = menu.getOwner().equals("");

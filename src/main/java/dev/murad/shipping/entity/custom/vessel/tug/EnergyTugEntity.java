@@ -7,6 +7,8 @@ import dev.murad.shipping.entity.container.EnergyHeadVehicleContainer;
 import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.InventoryUtils;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,13 +22,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import team.reborn.energy.api.EnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -144,12 +140,12 @@ public class EnergyTugEntity extends AbstractTugEntity {
     public void tick() {
         // grab energy from capacitor
         if (!level.isClientSide) {
-            IEnergyStorage capability = InventoryUtils.getEnergyCapabilityInSlot(0, itemHandler);
+            EnergyStorage capability = InventoryUtils.getEnergyCapabilityInSlot(0, itemHandler);
             if (capability != null) {
                 // simulate first
-                int toExtract = capability.extractEnergy(MAX_TRANSFER, true);
+                int toExtract = capability.extract(MAX_TRANSFER, true);
                 toExtract = internalBattery.insert(toExtract, false);
-                capability.extractEnergy(toExtract, false);
+                capability.insert(toExtract, false);
             }
         }
 

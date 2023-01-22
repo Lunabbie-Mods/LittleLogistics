@@ -37,9 +37,9 @@ public class EnergyHeadVehicleScreen<T extends Entity & HeadVehicle> extends Abs
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, GUI);
-        int i = this.getGuiLeft();
-        int j = this.getGuiTop();
-        this.blit(matrixStack, i, j, 0, 0, this.getXSize(), this.getYSize());
+        int i = this.leftPos;
+        int j = this.topPos;
+        this.blit(matrixStack, i, j, 0, 0, this.width, this.height);
 
         double r = this.menu.getEnergyCapacityRatio();
         int k = (int) (r * 50);

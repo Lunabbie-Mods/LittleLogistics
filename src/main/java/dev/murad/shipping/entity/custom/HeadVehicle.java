@@ -1,9 +1,9 @@
 package dev.murad.shipping.entity.custom;
 
 import dev.murad.shipping.util.EnrollmentHandler;
+import io.github.fabricators_of_create.porting_lib.transfer.item.SlotExposedStorage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.UUID;
 
@@ -11,7 +11,7 @@ public interface HeadVehicle  {
 
     void setEngineOn(boolean state);
 
-    ItemStackHandler getRouteItemHandler();
+    SlotExposedStorage getRouteItemHandler();
 
     boolean isValid(Player pPlayer);
 

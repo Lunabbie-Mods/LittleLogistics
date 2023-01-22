@@ -8,6 +8,8 @@ import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.InventoryUtils;
 import dev.murad.shipping.util.ItemHandlerVanillaContainerWrapper;
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,13 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import team.reborn.energy.api.EnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,7 +35,7 @@ public class EnergyLocomotiveEntity extends AbstractLocomotiveEntity implements 
     private static final int ENERGY_USAGE = ShippingConfig.Server.ENERGY_LOCO_BASE_ENERGY_USAGE.get();
 
     private final ReadWriteEnergyStorage internalBattery = new ReadWriteEnergyStorage(MAX_ENERGY, MAX_TRANSFER, Integer.MAX_VALUE);
-    private final LazyOptional<IEnergyStorage> holder = LazyOptional.of(() -> internalBattery);
+    private final LazyOptional<EnergyStorage> holder = LazyOptional.of(() -> internalBattery);
 
     public EnergyLocomotiveEntity(EntityType<?> type, Level p_38088_) {
         super(type, p_38088_);

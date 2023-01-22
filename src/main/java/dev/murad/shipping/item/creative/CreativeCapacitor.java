@@ -1,5 +1,6 @@
 package dev.murad.shipping.item.creative;
 
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +30,7 @@ public class CreativeCapacitor extends Item {
             return maxExtract;
         }
 
-        @Overridej
+        @Override
         public long getAmount() {
             return Long.MAX_VALUE;
         }
@@ -52,7 +53,7 @@ public class CreativeCapacitor extends Item {
 
     @Nullable
     @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+    public ComponentProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new ICapabilityProvider() {
             @Nonnull
             @Override

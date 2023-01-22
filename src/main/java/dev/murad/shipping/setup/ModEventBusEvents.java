@@ -5,9 +5,7 @@ import dev.murad.shipping.entity.custom.vessel.VesselEntity;
 import dev.murad.shipping.entity.custom.vessel.tug.EnergyTugEntity;
 import dev.murad.shipping.entity.custom.vessel.tug.SteamTugEntity;
 
-@Mod.EventBusSubscriber(modid = ShippingMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
-    @SubscribeEvent
     public static void addEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntityTypes.STEAM_TUG.get(), SteamTugEntity.setCustomAttributes().build());
         event.put(ModEntityTypes.ENERGY_TUG.get(), EnergyTugEntity.setCustomAttributes().build());

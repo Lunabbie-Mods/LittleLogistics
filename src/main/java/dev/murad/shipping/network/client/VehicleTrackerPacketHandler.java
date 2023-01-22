@@ -5,7 +5,6 @@ import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.phys.Vec3;
-import org.antlr.v4.runtime.misc.Triple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,12 +20,7 @@ public class VehicleTrackerPacketHandler {
     private static final String PROTOCOL_VERSION = "1";
     public static List<EntityPosition> toRender = new ArrayList<>();
     public static String toRenderDimension = "";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            LOCATION,
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
-    );
+    public static final SimpleChannel INSTANCE = new SimpleChannel(LOCATION);
 
     private static int id = 0;
     public static void register() {

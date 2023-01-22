@@ -54,8 +54,22 @@ repositories {
     maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
-    maven { url = "https://cursemaven.com" } // Forge Config API Port
-    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
+    maven {
+        // reach entity attributes
+        url "https://maven.jamieswhiteshirt.com/libs-release"
+        content {
+            includeGroup "com.jamieswhiteshirt"
+        }
+    }
+    maven {
+        // cardinal components api
+        name = 'Ladysnake Mods'
+        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+    }
+    maven {
+        // no indium
+        url = 'https://maven.cafeteria.dev/releases/'
+    }
 }
 
 dependencies {
@@ -78,6 +92,8 @@ dependencies {
     include modApi("teamreborn:energy:${project.tr_energy_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+    modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
 
     //modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}")
 }

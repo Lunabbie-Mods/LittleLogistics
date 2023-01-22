@@ -1,5 +1,6 @@
 package dev.murad.shipping.entity.custom.vessel.tug;
 
+import io.github.fabricators_of_create.porting_lib.entity.PartEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -10,7 +11,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.LeadItem;
-import net.minecraftforge.entity.PartEntity;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

@@ -24,11 +24,11 @@ public class EnergyHeadVehicleContainer<T extends Entity & HeadVehicle> extends 
         }
     }
 
-    public int getEnergy() {
+    public long getEnergy() {
         return this.data.getEnergy();
     }
 
-    public int getCapacity() {
+    public long getCapacity() {
         return this.data.getCapacity();
     }
 

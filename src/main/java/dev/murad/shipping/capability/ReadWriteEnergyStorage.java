@@ -3,6 +3,7 @@ package dev.murad.shipping.capability;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.nbt.CompoundTag;
 import team.reborn.energy.api.EnergyStorage;
+import team.reborn.energy.api.base.SimpleEnergyStorage;
 
 /**
  * Re-implementation of EnergyStorage so we can read and write it from/to NBT data
@@ -11,7 +12,7 @@ public class ReadWriteEnergyStorage implements EnergyStorage {
     public static final String ENERGY_TAG = "energy";
 
     private final int maxCapacity, maxReceive, maxExtract;
-    private EnergyStorage proxyStorage;
+    private SimpleEnergyStorage proxyStorage;
 
     public ReadWriteEnergyStorage(int maxCapacity, int maxReceive, int maxExtract)
     {
@@ -26,13 +27,15 @@ public class ReadWriteEnergyStorage implements EnergyStorage {
     }
 
     // when a TileEntity/Item/Entity is created, call this to set it up
-    public void setEnergy(int energy) {
-        proxyStorage = new EnergyStorage(maxCapacity, maxReceive, maxExtract, clampInclusive(energy, 0, maxCapacity));
+    public void setEnergy(long energy) {
+        proxyStorage = new SimpleEnergyStorage(maxCapacity, maxReceive, maxExtract);
+        proxyStorage.amount = energy;
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         int energy = compound.contains(ENERGY_TAG) ? compound.getInt(ENERGY_TAG) : 0;
-        proxyStorage = new EnergyStorage(maxCapacity, maxReceive, maxExtract, clampInclusive(energy, 0, maxCapacity));
+        proxyStorage = new SimpleEnergyStorage(maxCapacity, maxReceive, maxExtract);
+        proxyStorage.amount = energy;
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -41,12 +44,12 @@ public class ReadWriteEnergyStorage implements EnergyStorage {
 
     @Override
     public long insert(long maxAmount, TransactionContext transaction) {
-        return proxyStorage.insert(maxReceive, simulate);
+        return proxyStorage.insert(maxReceive, transaction);
     }
 
     @Override
     public long extract(long maxAmount, TransactionContext transaction) {
-        return proxyStorage.extract(maxExtract, simulate);
+        return proxyStorage.extract(maxExtract, transaction);
     }
 
     @Override

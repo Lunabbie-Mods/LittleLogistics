@@ -36,10 +36,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.Map;
@@ -49,7 +45,6 @@ import java.util.stream.Collectors;
 /**
  * Forge-wide event bus
  */
-@Mod.EventBusSubscriber(modid = ShippingMod.MOD_ID, value = Dist.CLIENT)
 public class ForgeClientEventHandler {
 
     public static final ResourceLocation BEAM_LOCATION = new ResourceLocation(ShippingMod.MOD_ID, "textures/entity/beacon_beam.png");
@@ -71,7 +66,6 @@ public class ForgeClientEventHandler {
     }
 
 
-    @SubscribeEvent
     public static void onRenderWorldLast(RenderLevelStageEvent event) {
         if(!event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_TRIPWIRE_BLOCKS)){
             return;

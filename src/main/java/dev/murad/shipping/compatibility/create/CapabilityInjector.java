@@ -4,8 +4,7 @@ import com.simibubi.create.content.contraptions.components.structureMovement.tra
 import com.simibubi.create.content.contraptions.components.structureMovement.train.capability.MinecartController;
 import dev.murad.shipping.capability.StallingCapability;
 import dev.murad.shipping.entity.custom.train.wagon.SeaterCarEntity;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 
 public class CapabilityInjector {

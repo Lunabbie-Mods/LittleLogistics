@@ -4,6 +4,7 @@ import dev.murad.shipping.compatibility.create.CapabilityInjector;
 import dev.murad.shipping.compatibility.create.CreateCompatibility;
 import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,14 +15,11 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
 public class SeaterCarEntity extends AbstractWagonEntity {
-    @Nullable
     private LazyOptional<?> createCompatMinecartControllerCapability = null;
 
     public SeaterCarEntity(EntityType<SeaterCarEntity> p_38087_, Level p_38088_) {

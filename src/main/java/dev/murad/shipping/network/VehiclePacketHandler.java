@@ -16,11 +16,8 @@ public final class VehiclePacketHandler {
     private static final Logger LOGGER = LogManager.getLogger(VehiclePacketHandler.class);
     public static final ResourceLocation LOCATION = new ResourceLocation(ShippingMod.MOD_ID, "locomotive_channel");
     private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            LOCATION,
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
+    public static final SimpleChannel INSTANCE = new SimpleChannel(
+            LOCATION
     );
 
     private static int id = 0;

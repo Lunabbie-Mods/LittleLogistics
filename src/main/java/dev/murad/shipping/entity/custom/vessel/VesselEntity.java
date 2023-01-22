@@ -8,6 +8,8 @@ import dev.murad.shipping.util.LinkableEntity;
 import dev.murad.shipping.util.LinkingHandler;
 import dev.murad.shipping.util.SpringPhysicsUtil;
 import dev.murad.shipping.util.Train;
+import io.github.fabricators_of_create.porting_lib.attributes.PortingLibAttributes;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -49,10 +51,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -137,7 +135,7 @@ public abstract class VesselEntity extends WaterAnimal implements LinkableEntity
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.0D)
-                .add(ForgeMod.SWIM_SPEED.get(), 0.0D);
+                .add(PortingLibAttributes.SWIM_SPEED, 0.0D);
     }
 
     @Override
@@ -172,14 +170,14 @@ public abstract class VesselEntity extends WaterAnimal implements LinkableEntity
     // reset speed to 1
     private void resetSpeedAttributes() {
         this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0);
-        this.getAttribute(ForgeMod.SWIM_SPEED.get()).setBaseValue(0);
+        this.getAttribute(PortingLibAttributes.SWIM_SPEED).setBaseValue(0);
     }
 
     private void setSpeedAttributes(double speed) {
         this.getAttribute(Attributes.MOVEMENT_SPEED)
                 .addTransientModifier(
                         new AttributeModifier("movementspeed_mult", speed, AttributeModifier.Operation.ADDITION));
-        this.getAttribute(ForgeMod.SWIM_SPEED.get())
+        this.getAttribute(PortingLibAttributes.SWIM_SPEED)
                 .addTransientModifier(
                         new AttributeModifier("swimspeed_mult", speed, AttributeModifier.Operation.ADDITION));
     }
@@ -524,7 +522,7 @@ public abstract class VesselEntity extends WaterAnimal implements LinkableEntity
     public void travel(Vec3 p_213352_1_) {
         if (this.isEffectiveAi() || this.isControlledByLocalInstance()) {
             double d0 = 0.08D;
-            AttributeInstance gravity = this.getAttribute(net.minecraftforge.common.ForgeMod.ENTITY_GRAVITY.get());
+            AttributeInstance gravity = this.getAttribute(PortingLibAttributes.ENTITY_GRAVITY);
             boolean flag = this.getDeltaMovement().y <= 0.0D;
             d0 = gravity.getValue();
 
@@ -671,6 +669,6 @@ public abstract class VesselEntity extends WaterAnimal implements LinkableEntity
     }
 
     protected double swimSpeed() {
-        return this.getAttribute(ForgeMod.SWIM_SPEED.get()).getValue();
+        return this.getAttribute(PortingLibAttributes.SWIM_SPEED).getValue();
     }
 }
