@@ -6,6 +6,7 @@ import dev.murad.shipping.entity.custom.vessel.VesselEntity;
 import dev.murad.shipping.entity.custom.vessel.tug.AbstractTugEntity;
 import dev.murad.shipping.util.Train;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -117,6 +118,16 @@ public abstract class AbstractBargeEntity extends VesselEntity {
     }
 
     private final StallingCapability capability = new StallingCapability() {
+        @Override
+        public void readFromNbt(CompoundTag tag) {
+
+        }
+
+        @Override
+        public void writeToNbt(CompoundTag tag) {
+
+        }
+
         @Override
         public boolean isDocked() {
             return delegate().map(StallingCapability::isDocked).orElse(false);

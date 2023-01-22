@@ -6,7 +6,6 @@ import dev.murad.shipping.ShippingMod;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.common.world.ForgeChunkManager;
 
 import java.util.HashSet;
 import java.util.Optional;

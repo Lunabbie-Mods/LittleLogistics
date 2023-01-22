@@ -5,6 +5,7 @@ import dev.murad.shipping.setup.ModTileEntitiesTypes;
 import dev.murad.shipping.util.FluidDisplayUtil;
 import dev.murad.shipping.util.LinkableEntity;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.item.FluidHandlerItemStack;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,7 +40,7 @@ public class FluidHopperTileEntity extends BlockEntity implements IVesselLoader 
         };
     };
 
-    private final LazyOptional<FluidHandler> holder = LazyOptional.of(() -> tank);
+    private final LazyOptional<FluidHandlerItemStack> holder = LazyOptional.of(() -> tank);
 
 
 

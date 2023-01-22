@@ -5,6 +5,7 @@ import dev.murad.shipping.block.IVesselLoader;
 import dev.murad.shipping.capability.ReadWriteEnergyStorage;
 import dev.murad.shipping.setup.ModTileEntitiesTypes;
 import dev.murad.shipping.util.LinkableEntity;
+import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

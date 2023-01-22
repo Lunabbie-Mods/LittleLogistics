@@ -1,11 +1,9 @@
 package dev.murad.shipping.capability;
 
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 
-public interface StallingCapability {
+import dev.onyxstudios.cca.api.v3.component.Component;
+
+public interface StallingCapability extends Component {
     Capability<StallingCapability> STALLING_CAPABILITY = CapabilityManager.get(new CapabilityToken<StallingCapability>(){});
     static void register(RegisterCapabilitiesEvent event) {
         event.register(StallingCapability.class);
