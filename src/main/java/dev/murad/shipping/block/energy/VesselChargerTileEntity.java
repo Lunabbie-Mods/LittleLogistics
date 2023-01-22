@@ -2,9 +2,11 @@ package dev.murad.shipping.block.energy;
 
 import dev.murad.shipping.ShippingConfig;
 import dev.murad.shipping.block.IVesselLoader;
-import dev.murad.shipping.capability.ReadWriteEnergyStorage;
+import dev.murad.shipping.component.ReadWriteEnergyStorage;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModTileEntitiesTypes;
 import dev.murad.shipping.util.LinkableEntity;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +22,7 @@ import team.reborn.energy.api.EnergyStorage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class VesselChargerTileEntity extends BlockEntity implements IVesselLoader {
     private static final int MAX_TRANSFER = ShippingConfig.Server.VESSEL_CHARGER_BASE_MAX_TRANSFER.get();
@@ -33,13 +36,13 @@ public class VesselChargerTileEntity extends BlockEntity implements IVesselLoade
         internalBattery.setEnergy(0);
     }
 
-    @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-        if (capability == CapabilityEnergy.ENERGY)
-            return holder.cast();
-        return super.getCapability(capability, facing);
-    }
+//    @Override
+//    @Nonnull
+//    public <T extends dev.onyxstudios.cca.api.v3.component.Component> LazyOptional<T> getCapability(@Nonnull ComponentKey<T> capability, @Nullable Direction facing) {
+//        if (capability == CapabilityEnergy.ENERGY)
+//            return holder.cast();
+//        return super.getCapability(capability, facing);
+//    }
 
 
     private void serverTickInternal() {
@@ -57,10 +60,10 @@ public class VesselChargerTileEntity extends BlockEntity implements IVesselLoade
 
 
     private boolean tryChargeEntity() {
-        return IVesselLoader.getEntityCapability(getBlockPos().relative(getBlockState().getValue(VesselChargerBlock.FACING)),
-                CapabilityEnergy.ENERGY, level).map(iEnergyStorage -> {
+        return IVesselLoader.getEntityComponent(getBlockPos().relative(getBlockState().getValue(VesselChargerBlock.FACING)),
+                ModComponents.ENERGY, level).map(iEnergyStorage -> {
                     int vesselCap = iEnergyStorage.receiveEnergy(MAX_TRANSFER, true);
-                    int toTransfer = internalBattery.extract(vesselCap, false);
+                    int toTransfer = internalBattery.extract(vesselCap);
                     return iEnergyStorage.receiveEnergy(toTransfer, false) > 0;
         }).orElse(false);
     }
@@ -81,7 +84,7 @@ public class VesselChargerTileEntity extends BlockEntity implements IVesselLoade
 
     @Override
     public<T extends Entity & LinkableEntity<T>> boolean hold(T vehicle, Mode mode) {
-        return vehicle.getCapability(CapabilityEnergy.ENERGY).map(energyHandler -> {
+        return Optional.of(vehicle.getComponent(ModComponents.ENERGY)).map(energyHandler -> {
             switch (mode) {
                 case EXPORT:
                     return (energyHandler.getEnergyStored() < energyHandler.getMaxEnergyStored() - 50) && internalBattery.getAmount() > 50;

@@ -48,7 +48,6 @@ repositories {
     maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
-    maven { url = "https://cursemaven.com" } // Forge Config API Port
     maven {
         // reach entity attributes
         url "https://maven.jamieswhiteshirt.com/libs-release"
@@ -65,6 +64,11 @@ repositories {
         // no indium
         url = 'https://maven.cafeteria.dev/releases/'
     }
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
+    maven { url = "https://cursemaven.com" }
 }
 
 dependencies {
@@ -82,7 +86,7 @@ dependencies {
     // modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:porting-lib:${project.porting_lib_version}"))
 
-    modImplementation "curse.maven:forge-config-api-port-fabric-547434:${project.config_api_id}"
+    modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${project.forge_config_api_version}"
 
     include modApi("teamreborn:energy:${project.tr_energy_version}") {
         exclude(group: "net.fabricmc.fabric-api")
@@ -96,6 +100,38 @@ dependencies {
 processResources {
     filesMatching("fabric.mod.json") {
         expand project.properties
+    }
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/littlelogistics.accesswidener")
+
+    runs {
+        //
+        // This adds a new gradle task that runs the datagen API: "gradlew runDatagenClient"
+        //
+        datagenClient {
+            inherit client
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
+
+            runDir "build/datagen"
+        }
+    }
+}
+
+//
+// Adds the generated files into the jar you distribute to players.
+//
+sourceSets {
+    main {
+        resources {
+            srcDirs += [
+                    'src/main/generated'
+            ]
+        }
     }
 }
 

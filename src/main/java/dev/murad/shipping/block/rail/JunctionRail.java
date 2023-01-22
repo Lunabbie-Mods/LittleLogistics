@@ -60,19 +60,20 @@ public class JunctionRail extends BaseRailBlock implements MultiShapeRail {
         return FLAT_AABB;
     }
 
-    @Override
-    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
-        return false;
-    }
-
-    @Override
-    public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos, @Nullable AbstractMinecart cart) {
-        if (cart == null) {
-            return state.getValue(getShapeProperty());
-        }
-
-        return RailHelper.directionFromVelocity(cart.getDeltaMovement()).getAxis() == Direction.Axis.X ? RailShape.EAST_WEST : RailShape.NORTH_SOUTH;
-    }
+    // TODO
+//    @Override
+//    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
+//        return false;
+//    }
+//
+//    @Override
+//    public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos, @Nullable AbstractMinecart cart) {
+//        if (cart == null) {
+//            return state.getValue(getShapeProperty());
+//        }
+//
+//        return RailHelper.directionFromVelocity(cart.getDeltaMovement()).getAxis() == Direction.Axis.X ? RailShape.EAST_WEST : RailShape.NORTH_SOUTH;
+//    }
 
     public BlockState rotate(BlockState pState, Rotation pRot) {
         return pState;

@@ -86,10 +86,11 @@ public class TeeJunctionRail extends BaseRailBlock implements MultiShapeRail {
         return entrance.equals(c.getPoweredDirection()) ? Set.of(c.getUnpoweredDirection()) : Set.of();
     }
 
-    @Override
-    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
-        return false;
-    }
+    // TODO
+//    @Override
+//    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
+//        return false;
+//    }
 
     private BranchingRailConfiguration getRailConfiguration(BlockState state) {
         Direction facing = state.getValue(FACING);
@@ -100,12 +101,13 @@ public class TeeJunctionRail extends BaseRailBlock implements MultiShapeRail {
         return new BranchingRailConfiguration(rootDirection, unpoweredDirection, poweredDirection);
     }
 
-    @Override
-    public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos, @Nullable AbstractMinecart cart) {
-        BranchingRailConfiguration c = getRailConfiguration(state);
-        Direction outDirection = state.getValue(POWERED) ? c.getPoweredDirection() : c.getUnpoweredDirection();
-        return RailShapeUtil.getRailShape(c.getRootDirection(), outDirection);
-    }
+    // TODO
+//    @Override
+//    public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos, @Nullable AbstractMinecart cart) {
+//        BranchingRailConfiguration c = getRailConfiguration(state);
+//        Direction outDirection = state.getValue(POWERED) ? c.getPoweredDirection() : c.getUnpoweredDirection();
+//        return RailShapeUtil.getRailShape(c.getRootDirection(), outDirection);
+//    }
 
     @Override
     public boolean setRailState(BlockState state, Level world, BlockPos pos, Direction in, Direction out) {
@@ -182,8 +184,9 @@ public class TeeJunctionRail extends BaseRailBlock implements MultiShapeRail {
         }
     }
 
-    @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @javax.annotation.Nullable Direction side) {
-        return true;
-    }
+    // TODO
+//    @Override
+//    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @javax.annotation.Nullable Direction side) {
+//        return true;
+//    }
 }

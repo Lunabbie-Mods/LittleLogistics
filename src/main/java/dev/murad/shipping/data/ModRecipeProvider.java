@@ -5,6 +5,8 @@ import dev.murad.shipping.setup.ModBlocks;
 import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
 import me.alphamode.forgetags.Tags;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -17,14 +19,14 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.function.Consumer;
 
-public class ModRecipeProvider extends RecipeProvider {
+public class ModRecipeProvider extends FabricRecipeProvider {
 
-    public ModRecipeProvider(DataGenerator p_i48262_1_) {
+    public ModRecipeProvider(FabricDataGenerator p_i48262_1_) {
         super(p_i48262_1_);
     }
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void generateRecipes(Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(ModBlocks.TUG_DOCK.get(), 2)
                 .define('#', ModItems.SPRING.get())
                 .define('_', Tags.Items.STONE)

@@ -1,4 +1,4 @@
-package dev.murad.shipping.capability;
+package dev.murad.shipping.component;
 
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.nbt.CompoundTag;

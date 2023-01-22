@@ -51,18 +51,19 @@ public class CreativeCapacitor extends Item {
         }
     }
 
-    @Nullable
-    @Override
-    public ComponentProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        return new ICapabilityProvider() {
-            @Nonnull
-            @Override
-            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                if (cap == CapabilityEnergy.ENERGY) {
-                    return LazyOptional.of(CreativeEnergyStorage::new).cast();
-                }
-                return LazyOptional.empty();
-            }
-        };
-    }
+    // TODO
+//    @Nullable
+//    @Override
+//    public ComponentProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+//        return new ICapabilityProvider() {
+//            @Nonnull
+//            @Override
+//            public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+//                if (cap == CapabilityEnergy.ENERGY) {
+//                    return LazyOptional.of(CreativeEnergyStorage::new).cast();
+//                }
+//                return LazyOptional.empty();
+//            }
+//        };
+//    }
 }

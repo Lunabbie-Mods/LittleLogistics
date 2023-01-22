@@ -3,10 +3,10 @@ package dev.murad.shipping.entity.custom.vessel.tug;
 import dev.murad.shipping.ShippingConfig;
 import dev.murad.shipping.block.dock.TugDockTileEntity;
 import dev.murad.shipping.block.guiderail.TugGuideRailBlock;
-import dev.murad.shipping.capability.StallingCapability;
+import dev.murad.shipping.component.StallingComponent;
 import dev.murad.shipping.entity.accessor.DataAccessor;
 import dev.murad.shipping.entity.custom.HeadVehicle;
-import dev.murad.shipping.global.PlayerTrainChunkManager;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.*;
 import dev.murad.shipping.entity.custom.vessel.VesselEntity;
@@ -29,7 +29,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
@@ -225,7 +224,7 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
 
 
     private void tickCheckDock() {
-        getCapability(StallingCapability.STALLING_CAPABILITY).ifPresent(cap -> {
+        var cap = getComponent(ModComponents.STALLING); //.ifPresent(cap -> {
             int x = (int) Math.floor(this.getX());
             int y = (int) Math.floor(this.getY());
             int z = (int) Math.floor(this.getZ());
@@ -263,7 +262,7 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
 
             if (changedDock) onDock();
             if (changedUndock) onUndock();
-        });
+        //});
     }
 
     @Override
@@ -390,12 +389,12 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
 
     private void followGuideRail(){
         // do not follow guide rail if stalled
-        var dockcap = getCapability(StallingCapability.STALLING_CAPABILITY);
-        if(dockcap.isPresent() && dockcap.resolve().isPresent()){
-            var cap = dockcap.resolve().get();
-            if(cap.isDocked() || cap.isFrozen() || cap.isStalled())
+        var dockcap = getComponent(ModComponents.STALLING);
+//        if(dockcap.isPresent() && dockcap.resolve().isPresent()){
+//            var cap = dockcap.resolve().get();
+            if(dockcap.isDocked() || dockcap.isFrozen() || dockcap.isStalled())
                 return;
-        }
+//        }
 
         List<BlockState> belowList = Arrays.asList(this.level.getBlockState(getOnPos().below()),
                 this.level.getBlockState(getOnPos().below().below()));
@@ -452,7 +451,7 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
     }
 
     public boolean shouldFreezeTrain() {
-        return !enrollmentHandler.mayMove() || (stalling.isStalled() && !docked) || linkingHandler.train.asList().stream().anyMatch(VesselEntity::isFrozen);
+        return !enrollmentHandler.mayMove() || (getComponent(ModComponents.STALLING).isStalled() && !docked) || linkingHandler.train.asList().stream().anyMatch(VesselEntity::isFrozen);
     }
 
     @Override
@@ -626,64 +625,76 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
     /*
                 Stalling Capability
          */
-    private final StallingCapability stalling = new StallingCapability() {
-        @Override
-        public boolean isDocked() {
-            return docked;
-        }
+    public static StallingComponent createStallingComponent(AbstractTugEntity entity) {
+        return new StallingComponent() {
+            @Override
+            public void readFromNbt(CompoundTag tag) {
 
-        @Override
-        public void dock(double x, double y, double z) {
-            docked = true;
-            setDeltaMovement(Vec3.ZERO);
-            moveTo(x, y, z);
-        }
+            }
 
-        @Override
-        public void undock() {
-            docked = false;
-        }
+            @Override
+            public void writeToNbt(CompoundTag tag) {
 
-        @Override
-        public boolean isStalled() {
-            return remainingStallTime > 0;
-        }
+            }
 
-        @Override
-        public void stall() {
-            remainingStallTime = 20;
-        }
+            @Override
+            public boolean isDocked() {
+                return entity.docked;
+            }
 
-        @Override
-        public void unstall() {
-            remainingStallTime = 0;
-        }
+            @Override
+            public void dock(double x, double y, double z) {
+                entity.docked = true;
+                entity.setDeltaMovement(Vec3.ZERO);
+                entity.moveTo(x, y, z);
+            }
 
-        @Override
-        public boolean isFrozen() {
-            return AbstractTugEntity.super.isFrozen();
-        }
+            @Override
+            public void undock() {
+                entity.docked = false;
+            }
 
-        @Override
-        public void freeze() {
-            setFrozen(true);
-        }
+            @Override
+            public boolean isStalled() {
+                return entity.remainingStallTime > 0;
+            }
 
-        @Override
-        public void unfreeze() {
-            setFrozen(false);
-        }
-    };
+            @Override
+            public void stall() {
+                entity.remainingStallTime = 20;
+            }
+
+            @Override
+            public void unstall() {
+                entity.remainingStallTime = 0;
+            }
+
+            @Override
+            public boolean isFrozen() {
+                return entity.isFrozen();
+            }
+
+            @Override
+            public void freeze() {
+                entity.setFrozen(true);
+            }
+
+            @Override
+            public void unfreeze() {
+                entity.setFrozen(false);
+            }
+        };
+    }
 
     // cache for best performance
-    private final LazyOptional<StallingCapability> stallingOpt = LazyOptional.of(() -> stalling);
+    private final LazyOptional<StallingComponent> stallingOpt = LazyOptional.of(() -> createStallingComponent(this));
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
-        if (cap == StallingCapability.STALLING_CAPABILITY) {
-            return stallingOpt.cast();
-        }
-        return super.getCapability(cap);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+//        if (cap == StallingComponent.STALLING_CAPABILITY) {
+//            return stallingOpt.cast();
+//        }
+//        return super.getCapability(cap);
+//    }
 }

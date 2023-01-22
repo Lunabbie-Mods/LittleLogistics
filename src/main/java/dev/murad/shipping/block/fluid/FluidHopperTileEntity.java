@@ -1,9 +1,12 @@
 package dev.murad.shipping.block.fluid;
 
 import dev.murad.shipping.block.IVesselLoader;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModTileEntitiesTypes;
 import dev.murad.shipping.util.FluidDisplayUtil;
 import dev.murad.shipping.util.LinkableEntity;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.item.FluidHandlerItemStack;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
@@ -51,13 +54,13 @@ public class FluidHopperTileEntity extends BlockEntity implements IVesselLoader 
     }
 
 
-    @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return holder.cast();
-        return super.getCapability(capability, facing);
-    }
+//    @Override
+//    @Nonnull
+//    public <T extends Component> LazyOptional<T> getCapability(@Nonnull ComponentKey<T> capability, @Nullable Direction facing) {
+//        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+//            return holder.cast();
+//        return super.getCapability(capability, facing);
+//    }
 
     public FluidTank getTank() {
         return this.tank;
@@ -105,9 +108,9 @@ public class FluidHopperTileEntity extends BlockEntity implements IVesselLoader 
 
     private Optional<IFluidHandler> getExternalFluidHandler(BlockPos pos){
         return Optional.ofNullable(this.level.getBlockEntity(pos))
-                .map(tile -> tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY))
+                .map(tile -> tile.getComponent(ModComponents.FLUID_HANDLER))
                 .flatMap(LazyOptional::resolve)
-                .map(Optional::of).orElseGet(() -> IVesselLoader.getEntityCapability(pos, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, this.level));
+                .map(Optional::of).orElseGet(() -> Optional.of(IVesselLoader.getEntityComponent(pos, ModComponents.FLUID_HANDLER, this.level)));
 
     }
 
@@ -126,7 +129,7 @@ public class FluidHopperTileEntity extends BlockEntity implements IVesselLoader 
 
     @Override
     public<T extends Entity & LinkableEntity<T>> boolean hold(T vehicle, Mode mode) {
-        return vehicle.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(iFluidHandler -> {
+        return vehicle.getComponent(ModComponents.FLUID_HANDLER).map(iFluidHandler -> {
             switch (mode) {
                 case IMPORT:
                     return !FluidUtil.tryFluidTransfer(this.tank, iFluidHandler, 1, false).isEmpty();

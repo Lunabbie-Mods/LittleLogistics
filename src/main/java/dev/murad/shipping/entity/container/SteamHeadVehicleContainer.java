@@ -2,6 +2,7 @@ package dev.murad.shipping.entity.container;
 
 import dev.murad.shipping.entity.accessor.SteamHeadVehicleDataAccessor;
 import dev.murad.shipping.entity.custom.HeadVehicle;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModMenuTypes;
 import dev.murad.shipping.util.EnrollmentHandler;
 import io.github.fabricators_of_create.porting_lib.transfer.item.SlotItemHandler;
@@ -15,9 +16,9 @@ public class SteamHeadVehicleContainer<T extends Entity & HeadVehicle> extends A
         super(ModMenuTypes.STEAM_LOCOMOTIVE_CONTAINER.get(), windowId, world, data, playerInventory, player);
 
         if(entity != null) {
-            entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            entity.getComponent(ModComponents.ITEM_HANDLER); //.ifPresent(h -> {
                 addSlot(new SlotItemHandler(h, 0, 42, 40));
-            });
+            //});
         }
         this.addDataSlots(data.getRawData());
     }

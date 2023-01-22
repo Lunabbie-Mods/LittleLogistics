@@ -1,9 +1,10 @@
 package dev.murad.shipping.entity.custom.vessel.barge;
 
 
-import dev.murad.shipping.capability.StallingCapability;
+import dev.murad.shipping.component.StallingComponent;
 import dev.murad.shipping.entity.custom.vessel.VesselEntity;
 import dev.murad.shipping.entity.custom.vessel.tug.AbstractTugEntity;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.util.Train;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.nbt.CompoundTag;
@@ -117,76 +118,78 @@ public abstract class AbstractBargeEntity extends VesselEntity {
         return isDockable();
     }
 
-    private final StallingCapability capability = new StallingCapability() {
-        @Override
-        public void readFromNbt(CompoundTag tag) {
+    public static StallingComponent createStallingComponent(AbstractBargeEntity entity) {
+        return new StallingComponent() {
+            @Override
+            public void readFromNbt(CompoundTag tag) {
 
-        }
-
-        @Override
-        public void writeToNbt(CompoundTag tag) {
-
-        }
-
-        @Override
-        public boolean isDocked() {
-            return delegate().map(StallingCapability::isDocked).orElse(false);
-        }
-
-        @Override
-        public void dock(double x, double y, double z) {
-            delegate().ifPresent(s -> s.dock(x, y, z));
-        }
-
-        @Override
-        public void undock() {
-            delegate().ifPresent(StallingCapability::undock);
-        }
-
-        @Override
-        public boolean isStalled() {
-            return delegate().map(StallingCapability::isStalled).orElse(false);
-        }
-
-        @Override
-        public void stall() {
-            delegate().ifPresent(StallingCapability::stall);
-        }
-
-        @Override
-        public void unstall() {
-            delegate().ifPresent(StallingCapability::unstall);
-        }
-
-        @Override
-        public boolean isFrozen() {
-            return AbstractBargeEntity.super.isFrozen();
-        }
-
-        @Override
-        public void freeze() {
-            AbstractBargeEntity.super.setFrozen(true);
-        }
-
-        @Override
-        public void unfreeze() {
-            AbstractBargeEntity.super.setFrozen(false);
-        }
-
-        private Optional<StallingCapability> delegate() {
-            if (linkingHandler.train.getHead() instanceof AbstractTugEntity e) {
-                return e.getCapability(StallingCapability.STALLING_CAPABILITY).resolve();
             }
-            return Optional.empty();
-        }
-    };
 
-    private final LazyOptional<StallingCapability> capabilityOpt = LazyOptional.of(() -> capability);
+            @Override
+            public void writeToNbt(CompoundTag tag) {
+
+            }
+
+            @Override
+            public boolean isDocked() {
+                return entity.delegate().map(StallingComponent::isDocked).orElse(false);
+            }
+
+            @Override
+            public void dock(double x, double y, double z) {
+                entity.delegate().ifPresent(s -> s.dock(x, y, z));
+            }
+
+            @Override
+            public void undock() {
+                entity.delegate().ifPresent(StallingComponent::undock);
+            }
+
+            @Override
+            public boolean isStalled() {
+                return entity.delegate().map(StallingComponent::isStalled).orElse(false);
+            }
+
+            @Override
+            public void stall() {
+                entity.delegate().ifPresent(StallingComponent::stall);
+            }
+
+            @Override
+            public void unstall() {
+                entity.delegate().ifPresent(StallingComponent::unstall);
+            }
+
+            @Override
+            public boolean isFrozen() {
+                return entity.isFrozen();
+            }
+
+            @Override
+            public void freeze() {
+                entity.setFrozen(true);
+            }
+
+            @Override
+            public void unfreeze() {
+                entity.setFrozen(false);
+            }
+        };
+    }
+
+    private Optional<StallingComponent> delegate() {
+        if (linkingHandler.train.getHead() instanceof AbstractTugEntity e) {
+            return Optional.of(e.getComponent(ModComponents.STALLING));
+        }
+        return Optional.empty();
+    }
+
+    private final LazyOptional<StallingComponent> capabilityOpt = LazyOptional.of(() -> capability);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
-        if (cap == StallingCapability.STALLING_CAPABILITY) {
+        if (cap == StallingComponent.STALLING_CAPABILITY) {
             return capabilityOpt.cast();
         }
         return super.getCapability(cap);

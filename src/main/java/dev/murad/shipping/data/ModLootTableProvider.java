@@ -4,17 +4,22 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import dev.murad.shipping.setup.ModBlocks;
 import dev.murad.shipping.setup.Registration;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricLootTableProvider;
+import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import io.github.fabricators_of_create.porting_lib.util.RegistryObject;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 import java.util.List;
 import java.util.Map;
@@ -23,10 +28,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class ModLootTableProvider extends LootTableProvider {
+public class ModLootTableProvider extends SimpleFabricLootTableProvider {
 
-    public ModLootTableProvider(DataGenerator dataGenerator) {
-        super(dataGenerator);
+    public ModLootTableProvider(FabricDataGenerator dataGenerator) {
+        super(dataGenerator, LootContextParamSets.BLOCK);
     }
 
     @Override
@@ -39,6 +44,11 @@ public class ModLootTableProvider extends LootTableProvider {
     @Override
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
         map.forEach((p_218436_2_, p_218436_3_) -> LootTables.validate(validationtracker, p_218436_2_, p_218436_3_));
+    }
+
+    @Override
+    public void accept(BiConsumer<ResourceLocation, LootTable.Builder> biConsumer) {
+
     }
 
     public static class ModBlockLootTables extends BlockLoot {

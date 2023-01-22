@@ -82,8 +82,9 @@ public class TugDockBlock extends AbstractDockBlock {
     }
 
 
-    @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @Nullable Direction side) {
-        return true;
-    }
+    // TODO
+//    @Override
+//    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @Nullable Direction side) {
+//        return true;
+//    }
 }

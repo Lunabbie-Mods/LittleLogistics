@@ -3,11 +3,13 @@ package dev.murad.shipping.entity.custom.vessel;
 import dev.murad.shipping.ShippingConfig;
 import dev.murad.shipping.entity.custom.train.AbstractTrainCarEntity;
 import dev.murad.shipping.entity.custom.vessel.tug.AbstractTugEntity;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.LinkableEntity;
 import dev.murad.shipping.util.LinkingHandler;
 import dev.murad.shipping.util.SpringPhysicsUtil;
 import dev.murad.shipping.util.Train;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import io.github.fabricators_of_create.porting_lib.attributes.PortingLibAttributes;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import lombok.Getter;
@@ -488,15 +490,15 @@ public abstract class VesselEntity extends WaterAnimal implements LinkableEntity
     }
 
     // Get rid of default armour/hands slots itemhandler from mobs
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return LazyOptional.empty();
-        }
-
-        return super.getCapability(cap, side);
-    }
+//    @Nonnull
+//    @Override
+//    public <T extends dev.onyxstudios.cca.api.v3.component.Component> LazyOptional<T> getCapability(@Nonnull ComponentKey<T> cap, @Nullable Direction side) {
+//        if (cap == ModComponents.ITEM_HANDLER) {
+//            return LazyOptional.empty();
+//        }
+//
+//        return LazyOptional.of(super.getComponent(cap));
+//    }
 
     @Override
     public boolean hurt(DamageSource damageSource, float p_70097_2_) {

@@ -29,14 +29,15 @@ public class Registration  {
     }
 
     public static void register () {
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        BLOCKS.register(eventBus);
-        ITEMS.register(eventBus);
-        CONTAINERS.register(eventBus);
-        RECIPE_SERIALIZERS.register(eventBus);
-        TILE_ENTITIES.register(eventBus);
-        ENTITIES.register(eventBus);
-        SOUND_EVENTS.register(eventBus);
+        // TODO figure out what this is supposed to do
+//        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+//        BLOCKS.register(eventBus);
+//        ITEMS.register(eventBus);
+//        CONTAINERS.register(eventBus);
+//        RECIPE_SERIALIZERS.register(eventBus);
+//        TILE_ENTITIES.register(eventBus);
+//        ENTITIES.register(eventBus);
+//        SOUND_EVENTS.register(eventBus);
 
         ModEntityTypes.register();
         ModItems.register();

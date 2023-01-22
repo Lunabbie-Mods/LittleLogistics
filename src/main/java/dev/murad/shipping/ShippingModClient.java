@@ -23,7 +23,7 @@ public class ShippingModClient implements ClientModInitializer {
 
         MenuScreens.register(ModMenuTypes.TUG_ROUTE_CONTAINER.get(), TugRouteScreen::new);
 
-        event.enqueueWork(ModItemModelProperties::register);
+        //event.enqueueWork(ModItemModelProperties::register);
     }
 
 }

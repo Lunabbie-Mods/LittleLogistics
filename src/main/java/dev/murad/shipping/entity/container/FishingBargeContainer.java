@@ -1,6 +1,7 @@
 package dev.murad.shipping.entity.container;
 
 import dev.murad.shipping.entity.custom.vessel.barge.FishingBargeEntity;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModMenuTypes;
 import io.github.fabricators_of_create.porting_lib.transfer.item.SlotItemHandler;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,13 +18,13 @@ public class FishingBargeContainer extends AbstractItemHandlerContainer {
         layoutPlayerInventorySlots(8, 49 + 18 * 2);
 
         if(fishingBargeEntity != null) {
-            fishingBargeEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            var h = fishingBargeEntity.getComponent(ModComponents.ITEM_HANDLER); //.ifPresent(h -> {
                 for(int l = 0; l < 3; ++l) {
                     for (int k = 0; k < 9; ++k) {
                         this.addSlot(new SlotItemHandler(h, l * 9 + k, 8 + k * 18, 18 * (l + 1) ));
                     }
                 }
-            });
+            //});
         }
     }
 

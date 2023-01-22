@@ -45,10 +45,11 @@ public class LocomotiveDockingRail extends AbstractDockingRail{
         }
     }
 
-    @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @javax.annotation.Nullable Direction side) {
-        return true;
-    }
+    // TODO
+//    @Override
+//    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @javax.annotation.Nullable Direction side) {
+//        return true;
+//    }
 
     @Nullable
     @Override

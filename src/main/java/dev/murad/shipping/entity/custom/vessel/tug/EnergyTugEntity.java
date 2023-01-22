@@ -1,7 +1,7 @@
 package dev.murad.shipping.entity.custom.vessel.tug;
 
 import dev.murad.shipping.ShippingConfig;
-import dev.murad.shipping.capability.ReadWriteEnergyStorage;
+import dev.murad.shipping.component.ReadWriteEnergyStorage;
 import dev.murad.shipping.entity.accessor.EnergyHeadVehicleDataAccessor;
 import dev.murad.shipping.entity.container.EnergyHeadVehicleContainer;
 import dev.murad.shipping.setup.ModEntityTypes;

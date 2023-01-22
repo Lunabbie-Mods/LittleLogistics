@@ -1,13 +1,12 @@
 package dev.murad.shipping.entity.custom.train.wagon;
 
-import dev.murad.shipping.capability.StallingCapability;
+import dev.murad.shipping.component.StallingComponent;
 import dev.murad.shipping.entity.custom.train.AbstractTrainCarEntity;
 import dev.murad.shipping.entity.custom.train.locomotive.AbstractLocomotiveEntity;
 import dev.murad.shipping.util.Train;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
@@ -84,10 +83,10 @@ public abstract class AbstractWagonEntity extends AbstractTrainCarEntity {
         return isDockable();
     }
 
-    private final StallingCapability capability = new StallingCapability() {
+    private final StallingComponent capability = new StallingComponent() {
         @Override
         public boolean isDocked() {
-            return delegate().map(StallingCapability::isDocked).orElse(false);
+            return delegate().map(StallingComponent::isDocked).orElse(false);
         }
 
         @Override
@@ -97,22 +96,22 @@ public abstract class AbstractWagonEntity extends AbstractTrainCarEntity {
 
         @Override
         public void undock() {
-            delegate().ifPresent(StallingCapability::undock);
+            delegate().ifPresent(StallingComponent::undock);
         }
 
         @Override
         public boolean isStalled() {
-            return delegate().map(StallingCapability::isStalled).orElse(false);
+            return delegate().map(StallingComponent::isStalled).orElse(false);
         }
 
         @Override
         public void stall() {
-            delegate().ifPresent(StallingCapability::stall);
+            delegate().ifPresent(StallingComponent::stall);
         }
 
         @Override
         public void unstall() {
-            delegate().ifPresent(StallingCapability::unstall);
+            delegate().ifPresent(StallingComponent::unstall);
         }
 
         @Override
@@ -130,20 +129,20 @@ public abstract class AbstractWagonEntity extends AbstractTrainCarEntity {
             AbstractWagonEntity.super.setFrozen(false);
         }
 
-        private Optional<StallingCapability> delegate() {
+        private Optional<StallingComponent> delegate() {
             if (linkingHandler.train.getHead() instanceof AbstractLocomotiveEntity e) {
-                return e.getCapability(StallingCapability.STALLING_CAPABILITY).resolve();
+                return e.getCapability(StallingComponent.STALLING_CAPABILITY).resolve();
             }
             return Optional.empty();
         }
     };
 
-    private final LazyOptional<StallingCapability> capabilityOpt = LazyOptional.of(() -> capability);
+    private final LazyOptional<StallingComponent> capabilityOpt = LazyOptional.of(() -> capability);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
-        if (cap == StallingCapability.STALLING_CAPABILITY) {
+        if (cap == StallingComponent.STALLING_CAPABILITY) {
             return capabilityOpt.cast();
         }
         return super.getCapability(cap);

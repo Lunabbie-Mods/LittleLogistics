@@ -3,14 +3,12 @@ package dev.murad.shipping.entity.custom.train.locomotive;
 import dev.murad.shipping.ShippingConfig;
 import dev.murad.shipping.block.rail.MultiShapeRail;
 import dev.murad.shipping.block.rail.blockentity.LocomotiveDockTileEntity;
-import dev.murad.shipping.capability.StallingCapability;
+import dev.murad.shipping.component.StallingComponent;
 import dev.murad.shipping.entity.accessor.DataAccessor;
 import dev.murad.shipping.entity.custom.HeadVehicle;
 import dev.murad.shipping.entity.custom.train.AbstractTrainCarEntity;
-import dev.murad.shipping.entity.custom.vessel.tug.AbstractTugEntity;
 import dev.murad.shipping.entity.custom.vessel.tug.VehicleFrontPart;
 import dev.murad.shipping.entity.navigation.LocomotiveNavigator;
-import dev.murad.shipping.global.PlayerTrainChunkManager;
 import dev.murad.shipping.item.LocoRouteItem;
 import dev.murad.shipping.setup.ModBlocks;
 import dev.murad.shipping.setup.ModItems;
@@ -377,7 +375,7 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
     }
 
     private void tickDockCheck() {
-        getCapability(StallingCapability.STALLING_CAPABILITY).ifPresent(cap -> {
+        getCapability(StallingComponent.STALLING_CAPABILITY).ifPresent(cap -> {
             int x = (int) Math.floor(this.getX());
             int y = (int) Math.floor(this.getY());
             int z = (int) Math.floor(this.getZ());
@@ -509,7 +507,7 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
         linkingHandler.train = train;
     }
 
-    protected final StallingCapability stalling = new StallingCapability() {
+    protected final StallingComponent stalling = new StallingComponent() {
         @Override
         public boolean isDocked() {
             return docked;
@@ -559,12 +557,12 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
     };
 
     // cache for best performance
-    private final LazyOptional<StallingCapability> stallingOpt = LazyOptional.of(() -> stalling);
+    private final LazyOptional<StallingComponent> stallingOpt = LazyOptional.of(() -> stalling);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
-        if (cap == StallingCapability.STALLING_CAPABILITY) {
+        if (cap == StallingComponent.STALLING_CAPABILITY) {
             return stallingOpt.cast();
         }
         return super.getCapability(cap);

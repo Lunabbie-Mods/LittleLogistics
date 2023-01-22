@@ -1,18 +1,15 @@
 package dev.murad.shipping.util;
 
-import dev.murad.shipping.capability.StallingCapability;
-import dev.murad.shipping.entity.custom.HeadVehicle;
+import dev.murad.shipping.component.StallingComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -54,7 +51,7 @@ public class LinkingHandler<T extends Entity & LinkableEntity<T>> {
                 waitForDominated = false;
                 stallNonTicking();
             } else if (waitForDominated) {
-                entity.getCapability(StallingCapability.STALLING_CAPABILITY).ifPresent(StallingCapability::stall);
+                entity.getCapability(StallingComponent.STALLING_CAPABILITY).ifPresent(StallingComponent::stall);
             }
             entity.getEntityData().set(dominantID, dominant.map(Entity::getId).orElse(-1));
             entity.getEntityData().set(dominatedID, dominated.map(Entity::getId).orElse(-1));
@@ -72,7 +69,7 @@ public class LinkingHandler<T extends Entity & LinkableEntity<T>> {
 //                .map(HeadVehicle::hasOwner).orElse(true);
 //
 //        if(!skip && !((ServerLevel) entity.level).isPositionEntityTicking(dominated.get().blockPosition())){
-//            entity.getCapability(StallingCapability.STALLING_CAPABILITY).ifPresent(StallingCapability::stall);
+//            entity.getCapability(StallingComponent.STALLING_CAPABILITY).ifPresent(StallingComponent::stall);
 //        }
     }
 

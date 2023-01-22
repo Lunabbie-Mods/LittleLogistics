@@ -105,26 +105,27 @@ public class SwitchRail extends BaseRailBlock implements MultiShapeRail {
         return FLAT_AABB;
     }
 
-    @Override
-    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
-        return false;
-    }
-
-    private BranchingRailConfiguration getRailConfiguration(BlockState state) {
-        OutDirection out = state.getValue(OUT_DIRECTION);
-
-        Direction unpoweredDirection = state.getValue(FACING);
-        Direction rootDirection = unpoweredDirection.getOpposite();
-        Direction poweredDirection = out.getOutDirection(rootDirection);
-
-        return new BranchingRailConfiguration(rootDirection, unpoweredDirection, poweredDirection);
-    }
-
-    @Override
-    public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos, @Nullable AbstractMinecart cart) {
-        BranchingRailConfiguration c = getRailConfiguration(state);
-        return RailShapeUtil.getRailShape(c.getRootDirection(), state.getValue(POWERED) ? c.getPoweredDirection() : c.getUnpoweredDirection());
-    }
+    // TODO
+//    @Override
+//    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
+//        return false;
+//    }
+//
+//    private BranchingRailConfiguration getRailConfiguration(BlockState state) {
+//        OutDirection out = state.getValue(OUT_DIRECTION);
+//
+//        Direction unpoweredDirection = state.getValue(FACING);
+//        Direction rootDirection = unpoweredDirection.getOpposite();
+//        Direction poweredDirection = out.getOutDirection(rootDirection);
+//
+//        return new BranchingRailConfiguration(rootDirection, unpoweredDirection, poweredDirection);
+//    }
+//
+//    @Override
+//    public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos, @Nullable AbstractMinecart cart) {
+//        BranchingRailConfiguration c = getRailConfiguration(state);
+//        return RailShapeUtil.getRailShape(c.getRootDirection(), state.getValue(POWERED) ? c.getPoweredDirection() : c.getUnpoweredDirection());
+//    }
 
     @Override
     public boolean setRailState(BlockState state, Level world, BlockPos pos, Direction in, Direction out) {

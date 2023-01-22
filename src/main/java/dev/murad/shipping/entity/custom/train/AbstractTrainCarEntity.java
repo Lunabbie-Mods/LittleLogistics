@@ -3,9 +3,8 @@ package dev.murad.shipping.entity.custom.train;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import dev.murad.shipping.ShippingConfig;
-import dev.murad.shipping.capability.StallingCapability;
+import dev.murad.shipping.component.StallingComponent;
 import dev.murad.shipping.entity.custom.train.locomotive.AbstractLocomotiveEntity;
-import dev.murad.shipping.entity.custom.vessel.VesselEntity;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.LinkableEntity;
 import dev.murad.shipping.util.LinkingHandler;
@@ -22,7 +21,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -222,7 +220,7 @@ public abstract class AbstractTrainCarEntity extends AbstractMinecart implements
         if (!this.level.isClientSide) {
             // not perfect, doesn't work when a mob stand in the way without moving, but works well enough underwater to keep this
             if (pEntity instanceof LivingEntity l && l.getVehicle() == null){
-                this.getCapability(StallingCapability.STALLING_CAPABILITY).ifPresent(StallingCapability::stall);
+                this.getCapability(StallingComponent.STALLING_CAPABILITY).ifPresent(StallingComponent::stall);
             }
             if (!pEntity.noPhysics && !this.noPhysics) {
                 // fix carts with passengers falling behind
