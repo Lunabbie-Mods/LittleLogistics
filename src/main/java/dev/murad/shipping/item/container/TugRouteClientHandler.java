@@ -129,7 +129,7 @@ public class TugRouteClientHandler {
 
         @Override
         public int getRowWidth() {
-            return screen.getXSize() - 40;
+            return screen.width - 40;
         }
 
         @Override

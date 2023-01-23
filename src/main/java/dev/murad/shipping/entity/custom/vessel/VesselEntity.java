@@ -394,7 +394,7 @@ public abstract class VesselEntity extends WaterAnimal implements LinkableEntity
                             blockpos$mutableblockpos.set(l1, k2, i2);
                             BlockState blockstate = this.level.getBlockState(blockpos$mutableblockpos);
                             if (!(blockstate.getBlock() instanceof WaterlilyBlock) && Shapes.joinIsNotEmpty(blockstate.getCollisionShape(this.level, blockpos$mutableblockpos).move((double)l1, (double)k2, (double)i2), voxelshape, BooleanOp.AND)) {
-                                // TODO
+                                // TODO friction
                                 //f += blockstate.getFriction(this.level, blockpos$mutableblockpos, this);
                                 ++k1;
                             }
@@ -647,7 +647,7 @@ public abstract class VesselEntity extends WaterAnimal implements LinkableEntity
                 }
             } else {
                 BlockPos blockpos = this.getBlockPosBelowThatAffectsMyMovement();
-                // TODO
+                // TODO friction
                 //float f3 = this.level.getBlockState(this.getBlockPosBelowThatAffectsMyMovement()).getFriction(level, this.getBlockPosBelowThatAffectsMyMovement(), this);
                 float f3 = 1;
                 float f4 = this.onGround ? f3 * 0.91F : 0.91F;

@@ -23,6 +23,9 @@
     ],
     "client": [
       "dev.murad.shipping.ShippingModClient"
+    ],
+    "fabric-datagen": [
+      "dev.murad.shipping.data.DataGenerators"
     ]
   },
   "mixins": [

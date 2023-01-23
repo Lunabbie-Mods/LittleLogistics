@@ -64,11 +64,13 @@ repositories {
         // no indium
         url = 'https://maven.cafeteria.dev/releases/'
     }
+//    maven {
+//        name = "Fuzs Mod Resources"
+//        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+//    }
     maven {
-        name = "Fuzs Mod Resources"
-        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        url = "https://cursemaven.com"
     }
-    maven { url = "https://cursemaven.com" }
 }
 
 dependencies {
@@ -86,7 +88,7 @@ dependencies {
     // modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
     modImplementation(include("io.github.fabricators_of_create.Porting-Lib:porting-lib:${project.porting_lib_version}"))
 
-    modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${project.forge_config_api_version}"
+    //modImplementation "curse.maven:forge-config-api-port-fabric-547434:${project.config_api_id}"
 
     include modApi("teamreborn:energy:${project.tr_energy_version}") {
         exclude(group: "net.fabricmc.fabric-api")
@@ -94,9 +96,7 @@ dependencies {
 
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
 
-    modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}") {
-        exclude(group: "curse.maven")
-    }
+    modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}")
 }
 
 processResources {

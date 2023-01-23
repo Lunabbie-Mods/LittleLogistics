@@ -129,7 +129,7 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
             return InteractionResult.PASS;
         }
         if(!this.level.isClientSide){
-            // TODO
+            // TODO open screen
             // NetworkHooks.openScreen((ServerPlayer) pPlayer, createContainerProvider(), getDataAccessor()::write);
 
         }
@@ -345,7 +345,7 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
         }).isEmpty();
     }
 
-    // TODO
+    // TODO multipart entity, powered cart
 //    @Override
 //    public PartEntity<?>[] getParts()
 //    {
@@ -514,12 +514,12 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
     protected final StallingComponent stalling = new StallingComponent() {
         @Override
         public void readFromNbt(CompoundTag tag) {
-            // TODO
+            // TODO read nbt
         }
 
         @Override
         public void writeToNbt(CompoundTag tag) {
-            // TODO
+            // TODO write nbt
         }
 
         @Override

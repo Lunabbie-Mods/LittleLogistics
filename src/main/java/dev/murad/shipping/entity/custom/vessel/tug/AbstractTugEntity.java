@@ -302,7 +302,7 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!player.level.isClientSide()) {
-            // TODO
+            // TODO open screen
             // NetworkHooks.openScreen((ServerPlayer) player, createContainerProvider(), getDataAccessor()::write);
         }
         return InteractionResult.CONSUME;
@@ -348,7 +348,7 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
         }
     }
 
-    // TODO
+    // TODO multipart entity
 //    @Override
 //    public boolean isMultipartEntity() {
 //        return true;

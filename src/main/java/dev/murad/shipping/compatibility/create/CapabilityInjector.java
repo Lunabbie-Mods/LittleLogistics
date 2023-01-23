@@ -45,7 +45,7 @@ public class CapabilityInjector {
     }
 
     public static <T extends Component> boolean isMinecartControllerComponent(@NotNull ComponentKey<T> cap) {
-        // TODO
+        // TODO minecart controller component
         // return cap == CapabilityMinecartController.MINECART_CONTROLLER_CAPABILITY;
         return false;
     }

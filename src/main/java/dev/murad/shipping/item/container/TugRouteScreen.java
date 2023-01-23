@@ -102,8 +102,8 @@ public class TugRouteScreen extends AbstractContainerScreen<TugRouteContainer> {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, GUI);
-        int left = this.getGuiLeft();
-        int top = this.getGuiTop();
+        int left = this.leftPos;
+        int top = this.topPos;
         int right = this.getRight();
         int bot = this.getBot();
 
@@ -120,29 +120,29 @@ public class TugRouteScreen extends AbstractContainerScreen<TugRouteContainer> {
         // top
         blit(matrixStack, left + 4, top, this.getBlitOffset(),
                 4 * zoom, 0,
-                getXSize() - 8, 4,
+                width - 8, 4,
                 256 * zoom, 256);
 
         // bottom
         blit(matrixStack, left + 4, bot - 4, this.getBlitOffset(),
                 4 * zoom, 8,
-                getXSize() - 8, 4,
+                width - 8, 4,
                 256 * zoom, 256);
 
         // left
         blit(matrixStack, left, top + 4, this.getBlitOffset(),
                 0, 4 * zoom,
-                4, getYSize() - 8,
+                4, height - 8,
                 256, 256 * zoom);
 
         // right
         blit(matrixStack, right - 4, top + 4, this.getBlitOffset(),
                 8, 4 * zoom,
-                4, getYSize() - 8,
+                4, height - 8,
                 256, 256 * zoom);
 
         // middle
-        blit(matrixStack, left + 4, top + 4, this.getBlitOffset(), 4 * zoom, 4 * zoom, getXSize() - 8, getYSize() - 8, 256 * zoom, 256 * zoom);
+        blit(matrixStack, left + 4, top + 4, this.getBlitOffset(), 4 * zoom, 4 * zoom, width - 8, height - 8, 256 * zoom, 256 * zoom);
     }
 
     // remove inventory tag

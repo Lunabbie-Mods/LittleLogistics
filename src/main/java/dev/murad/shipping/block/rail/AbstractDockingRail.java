@@ -49,7 +49,7 @@ public abstract class AbstractDockingRail extends BaseRailBlock implements Entit
         return FLAT_AABB;
     }
 
-    // TODO
+    // TODO can make slopes
 //    @Override
 //    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
 //        return false;

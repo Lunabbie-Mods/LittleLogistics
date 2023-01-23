@@ -13,10 +13,26 @@ import javax.annotation.Nullable;
 import net.minecraft.world.item.Item.Properties;
 import team.reborn.energy.api.EnergyStorage;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import team.reborn.energy.api.base.SimpleEnergyItem;
 
-public class CreativeCapacitor extends Item {
+public class CreativeCapacitor extends Item implements SimpleEnergyItem {
     public CreativeCapacitor(Properties props) {
         super(props);
+    }
+
+    @Override
+    public long getEnergyCapacity(ItemStack stack) {
+        return Long.MAX_VALUE;
+    }
+
+    @Override
+    public long getEnergyMaxInput(ItemStack stack) {
+        return Long.MAX_VALUE;
+    }
+
+    @Override
+    public long getEnergyMaxOutput(ItemStack stack) {
+        return Long.MAX_VALUE;
     }
 
     static class CreativeEnergyStorage implements EnergyStorage {
@@ -51,7 +67,7 @@ public class CreativeCapacitor extends Item {
         }
     }
 
-    // TODO
+    // TODO component
 //    @Nullable
 //    @Override
 //    public ComponentProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {

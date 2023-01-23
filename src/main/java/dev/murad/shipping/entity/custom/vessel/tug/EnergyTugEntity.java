@@ -75,7 +75,7 @@ public class EnergyTugEntity extends AbstractTugEntity {
         return new ItemStackHandler(1) {
             @Override
             public boolean isItemValid(int slot, ItemVariant resource) {
-                // TODO
+                // TODO energy component
                 //return resource.getComponent(ModComponents.ENERGY).isPresent();
                 return true;
             }

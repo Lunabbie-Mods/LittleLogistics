@@ -71,7 +71,7 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<ChestCarEntity>of(ChestCarEntity::new,
                                     MobCategory.MISC).sized(0.7f, 0.9f)
                             .clientTrackingRange(8)
-                            // TODO
+                            // TODO velocity updates
                             //.setShouldReceiveVelocityUpdates(true)
                             .build(new ResourceLocation(ShippingMod.MOD_ID, "chest_car").toString()));
 
@@ -80,7 +80,7 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<SeaterCarEntity>of(SeaterCarEntity::new,
                                     MobCategory.MISC).sized(0.7f, 0.9f)
                             .clientTrackingRange(8)
-                            // TODO
+                            // TODO velocity updates
                             // .setShouldReceiveVelocityUpdates(true)
                             .build(new ResourceLocation(ShippingMod.MOD_ID, "seater_car").toString()));
 
@@ -89,7 +89,7 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<FluidTankCarEntity>of(FluidTankCarEntity::new,
                                     MobCategory.MISC).sized(0.7f, 0.9f)
                             .clientTrackingRange(8)
-                            // TODO
+                            // TODO velocity updates
                             // .setShouldReceiveVelocityUpdates(true)
                             .build(new ResourceLocation(ShippingMod.MOD_ID, "fluid_car").toString()));
 
@@ -98,7 +98,7 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<ChunkLoaderCarEntity>of(ChunkLoaderCarEntity::new,
                                     MobCategory.MISC).sized(0.7f, 0.9f)
                             .clientTrackingRange(8)
-                            // TODO
+                            // TODO velocity updates
                             // .setShouldReceiveVelocityUpdates(true)
                             .build(new ResourceLocation(ShippingMod.MOD_ID, "chunk_loader_car").toString()));
 
@@ -108,7 +108,7 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<AbstractLocomotiveEntity>of(SteamLocomotiveEntity::new,
                                     MobCategory.MISC).sized(0.7f, 0.9f)
                             .clientTrackingRange(8)
-                            // TODO
+                            // TODO velocity updates
                             // .setShouldReceiveVelocityUpdates(true)
                             .build(new ResourceLocation(ShippingMod.MOD_ID, "steam_locomotive").toString()));
 
@@ -117,7 +117,7 @@ public class ModEntityTypes {
                     () -> EntityType.Builder.<AbstractLocomotiveEntity>of(EnergyLocomotiveEntity::new,
                                     MobCategory.MISC)
                             .clientTrackingRange(8)
-                            // TODO
+                            // TODO velocity updates
                             // .setShouldReceiveVelocityUpdates(true)
                             .sized(0.7f, 0.9f)
                             .build(new ResourceLocation(ShippingMod.MOD_ID, "energy_locomotive").toString()));

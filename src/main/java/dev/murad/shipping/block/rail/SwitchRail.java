@@ -105,7 +105,7 @@ public class SwitchRail extends BaseRailBlock implements MultiShapeRail {
         return FLAT_AABB;
     }
 
-    // TODO
+    // TODO can make slopes, get rail config
 //    @Override
 //    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
 //        return false;
@@ -221,7 +221,7 @@ public class SwitchRail extends BaseRailBlock implements MultiShapeRail {
         }
     }
 
-    // TODO
+    // TODO connect redstone
 //    @Override
 //    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @javax.annotation.Nullable Direction side) {
 //        return true;

@@ -86,7 +86,7 @@ public class TeeJunctionRail extends BaseRailBlock implements MultiShapeRail {
         return entrance.equals(c.getPoweredDirection()) ? Set.of(c.getUnpoweredDirection()) : Set.of();
     }
 
-    // TODO
+    // TODO can make slopes
 //    @Override
 //    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
 //        return false;
@@ -101,7 +101,7 @@ public class TeeJunctionRail extends BaseRailBlock implements MultiShapeRail {
         return new BranchingRailConfiguration(rootDirection, unpoweredDirection, poweredDirection);
     }
 
-    // TODO
+    // TODO get rail direction
 //    @Override
 //    public RailShape getRailDirection(BlockState state, BlockGetter world, BlockPos pos, @Nullable AbstractMinecart cart) {
 //        BranchingRailConfiguration c = getRailConfiguration(state);
@@ -184,7 +184,7 @@ public class TeeJunctionRail extends BaseRailBlock implements MultiShapeRail {
         }
     }
 
-    // TODO
+    // TODO connect redstone
 //    @Override
 //    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @javax.annotation.Nullable Direction side) {
 //        return true;

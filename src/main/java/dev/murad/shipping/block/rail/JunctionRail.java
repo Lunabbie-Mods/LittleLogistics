@@ -60,7 +60,7 @@ public class JunctionRail extends BaseRailBlock implements MultiShapeRail {
         return FLAT_AABB;
     }
 
-    // TODO
+    // TODO can make slopes, get rail direction
 //    @Override
 //    public boolean canMakeSlopes(BlockState state, BlockGetter world, BlockPos pos) {
 //        return false;
