@@ -5,6 +5,7 @@ import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.FluidDisplayUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.item.FluidHandlerItemStack;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.core.Direction;
@@ -39,7 +40,7 @@ public class FluidTankBargeEntity extends AbstractBargeEntity{
     private int clientCurrAmount = 0;
 
 
-    private final LazyOptional<IFluidHandler> holder = LazyOptional.of(() -> tank);
+    private final LazyOptional<FluidHandlerItemStack> holder = LazyOptional.of(() -> tank);
 
 
     public FluidTankBargeEntity(EntityType<? extends AbstractBargeEntity> type, Level world) {
@@ -108,12 +109,12 @@ public class FluidTankBargeEntity extends AbstractBargeEntity{
         }
     }
 
-    @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing)
-    {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return holder.cast();
-        return super.getCapability(capability, facing);
-    }
+//    @Override
+//    @Nonnull
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing)
+//    {
+//        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+//            return holder.cast();
+//        return super.getCapability(capability, facing);
+//    }
 }

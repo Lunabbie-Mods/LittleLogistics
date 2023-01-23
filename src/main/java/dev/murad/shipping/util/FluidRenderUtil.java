@@ -30,6 +30,9 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -152,7 +155,7 @@ public class FluidRenderUtil {
                 normalVector, color, lightmapValue);
     }
 
-    public static void renderCubeUsingQuads(int capacity, FluidStack fluid, float partialTicks, PoseStack PoseStack, MultiBufferSource renderBuffers, int combinedLight, int combinedOverlay) {
+    public static void renderCubeUsingQuads(long capacity, FluidStack fluid, float partialTicks, PoseStack PoseStack, MultiBufferSource renderBuffers, int combinedLight, int combinedOverlay) {
         // draw the object as a cube, using quad
         // When render method is called, the origin [0,0,0] is at the current [x,y,z] of the block.
 
@@ -169,7 +172,7 @@ public class FluidRenderUtil {
     /**
      * Draw a cube from [0,0,0] to [1,1,1], same texture on all sides, using a supplied texture
      */
-    private static void drawCubeQuads(PoseStack PoseStack, MultiBufferSource renderBuffer, int combinedLight, FluidStack fluid, int capacity) {
+    private static void drawCubeQuads(PoseStack PoseStack, MultiBufferSource renderBuffer, int combinedLight, FluidStack fluid, long capacity) {
         // other typical RenderTypes used by TER are:
         // getEntityCutout, getBeaconBeam (which has translucent),
         IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(fluid.getFluid());

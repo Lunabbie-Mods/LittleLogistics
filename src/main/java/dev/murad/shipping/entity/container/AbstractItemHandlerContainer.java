@@ -1,5 +1,6 @@
 package dev.murad.shipping.entity.container;
 
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.transfer.item.SlotItemHandler;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,7 +13,7 @@ import javax.annotation.Nullable;
 
 public abstract class AbstractItemHandlerContainer extends AbstractContainerMenu {
     protected final Player player;
-    private final IItemHandler playerInventory;
+    private final ItemStackHandler playerInventory;
 
     protected AbstractItemHandlerContainer(@Nullable MenuType<?> p_i50105_1_, int p_i50105_2_, Inventory playerInventory, Player player) {
         super(p_i50105_1_, p_i50105_2_);
@@ -20,7 +21,7 @@ public abstract class AbstractItemHandlerContainer extends AbstractContainerMenu
         this.playerInventory = new InvWrapper(playerInventory);
     }
 
-    private int addSlotRange(IItemHandler handler, int index, int x, int y, int amount, int dx) {
+    private int addSlotRange(ItemStackHandler handler, int index, int x, int y, int amount, int dx) {
         for (int i = 0; i < amount; i++) {
             addSlot(new SlotItemHandler(handler, index, x, y));
             x += dx;
@@ -30,7 +31,7 @@ public abstract class AbstractItemHandlerContainer extends AbstractContainerMenu
         return index;
     }
 
-    private int addSlotBox(IItemHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount, int dy) {
+    private int addSlotBox(ItemStackHandler handler, int index, int x, int y, int horAmount, int dx, int verAmount, int dy) {
         for (int j = 0; j < verAmount; j++) {
             index = addSlotRange(handler, index, x, y, horAmount, dx);
             y += dy;

@@ -11,6 +11,7 @@ import dev.murad.shipping.util.LinkableEntity;
 import dev.murad.shipping.util.LinkingHandler;
 import dev.murad.shipping.util.RailHelper;
 import dev.murad.shipping.util.Train;
+import io.github.fabricators_of_create.porting_lib.extensions.AbstractMinecartExtensions;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.Util;
@@ -49,7 +50,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public abstract class AbstractTrainCarEntity extends AbstractMinecart implements IForgeAbstractMinecart, LinkableEntity<AbstractTrainCarEntity> {
+public abstract class AbstractTrainCarEntity extends AbstractMinecart implements AbstractMinecartExtensions, LinkableEntity<AbstractTrainCarEntity> {
 
     public static final EntityDataAccessor<Integer> DOMINANT_ID = SynchedEntityData.defineId(AbstractTrainCarEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> DOMINATED_ID = SynchedEntityData.defineId(AbstractTrainCarEntity.class, EntityDataSerializers.INT);
@@ -200,7 +201,7 @@ public abstract class AbstractTrainCarEntity extends AbstractMinecart implements
     }
 
     @Override
-    public float getMaxCartSpeedOnRail() {
+    public float getMaxSpeedOnRail() {
         return (float) (ShippingConfig.Server.TRAIN_MAX_SPEED.get() * 1f);
     }
 

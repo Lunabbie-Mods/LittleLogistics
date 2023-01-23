@@ -43,7 +43,7 @@ import java.util.stream.IntStream;
 
 public class FishingBargeEntity extends AbstractBargeEntity implements Container, WorldlyContainer {
     protected final ItemStackHandler itemHandler = createHandler();
-    protected final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    protected final LazyOptional<ItemStackHandler> handler = LazyOptional.of(() -> itemHandler);
     protected boolean contentsChanged = false;
     private int ticksDeployable = 0;
     private int fishCooldown = 0;
@@ -307,15 +307,15 @@ public class FishingBargeEntity extends AbstractBargeEntity implements Container
         }
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+//        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//            return handler.cast();
+//        }
+//
+//        return super.getCapability(cap, side);
+//    }
 
     @Override
     public void clearContent() {

@@ -114,15 +114,15 @@ public class SeaterCarEntity extends AbstractWagonEntity {
         return AbstractMinecart.Type.RIDEABLE;
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
-        if (CreateCompatibility.enabled() &&
-                createCompatMinecartControllerCapability != null
-                && CapabilityInjector.isMinecartControllerComponent(cap)
-        ) {
-            return createCompatMinecartControllerCapability.cast();
-        }
-        return super.getCapability(cap);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+//        if (CreateCompatibility.enabled() &&
+//                createCompatMinecartControllerCapability != null
+//                && CapabilityInjector.isMinecartControllerComponent(cap)
+//        ) {
+//            return createCompatMinecartControllerCapability.cast();
+//        }
+//        return super.getCapability(cap);
+//    }
 }

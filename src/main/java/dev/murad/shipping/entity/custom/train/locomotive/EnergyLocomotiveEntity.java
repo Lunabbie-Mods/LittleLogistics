@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 
 public class EnergyLocomotiveEntity extends AbstractLocomotiveEntity implements ItemHandlerVanillaContainerWrapper, WorldlyContainer {
     private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    private final LazyOptional<ItemStackHandler> handler = LazyOptional.of(() -> itemHandler);
     private static final int MAX_ENERGY = ShippingConfig.Server.ENERGY_LOCO_BASE_CAPACITY.get();
     private static final int MAX_TRANSFER = ShippingConfig.Server.ENERGY_LOCO_BASE_MAX_CHARGE_RATE.get();
     private static final int ENERGY_USAGE = ShippingConfig.Server.ENERGY_LOCO_BASE_ENERGY_USAGE.get();

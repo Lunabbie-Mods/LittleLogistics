@@ -244,7 +244,7 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
     }
 
     @Override
-    public float getMaxCartSpeedOnRail() {
+    public float getMaxSpeedOnRail() {
         return (float) (ShippingConfig.Server.TRAIN_MAX_SPEED.get() * 0.9);
     }
 

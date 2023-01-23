@@ -1,15 +1,18 @@
 package dev.murad.shipping.block.fluid;
 
 import dev.murad.shipping.block.IVesselLoader;
+import dev.murad.shipping.component.FluidHandlerComponent;
 import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModTileEntitiesTypes;
 import dev.murad.shipping.util.FluidDisplayUtil;
 import dev.murad.shipping.util.LinkableEntity;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.item.FluidHandlerItemStack;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +30,7 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class FluidHopperTileEntity extends BlockEntity implements IVesselLoader {
-    public static final int CAPACITY = FluidType.BUCKET_VOLUME * 10;
+    public static final long CAPACITY = FluidConstants.BUCKET * 10;
     private int cooldownTime = 0;
 
     public FluidHopperTileEntity(BlockPos pos, BlockState state) {
@@ -106,7 +109,7 @@ public class FluidHopperTileEntity extends BlockEntity implements IVesselLoader 
         }
     }
 
-    private Optional<IFluidHandler> getExternalFluidHandler(BlockPos pos){
+    private Optional<FluidHandlerComponent> getExternalFluidHandler(BlockPos pos){
         return Optional.ofNullable(this.level.getBlockEntity(pos))
                 .map(tile -> tile.getComponent(ModComponents.FLUID_HANDLER))
                 .flatMap(LazyOptional::resolve)
@@ -116,25 +119,25 @@ public class FluidHopperTileEntity extends BlockEntity implements IVesselLoader 
 
     private boolean tryImportFluid() {
         return getExternalFluidHandler(this.getBlockPos().above()).map(iFluidHandler ->
-           !FluidUtil.tryFluidTransfer(this.tank, iFluidHandler, 50, true).isEmpty()
+                TransferUtil.insertFluid(tank, iFluidHandler.stack(50)) != 0
         ).orElse(false);
     }
 
     private boolean tryExportFluid() {
         return getExternalFluidHandler(this.getBlockPos().relative(this.getBlockState().getValue(FluidHopperBlock.FACING)))
                 .map(iFluidHandler ->
-            !FluidUtil.tryFluidTransfer(iFluidHandler, this.tank, 50, true).isEmpty()
+                        TransferUtil.extractFluid(tank, iFluidHandler.stack(50)) != 0
         ).orElse(false);
     }
 
     @Override
     public<T extends Entity & LinkableEntity<T>> boolean hold(T vehicle, Mode mode) {
-        return vehicle.getComponent(ModComponents.FLUID_HANDLER).map(iFluidHandler -> {
+        return Optional.of(vehicle.getComponent(ModComponents.FLUID_HANDLER)).map(iFluidHandler -> {
             switch (mode) {
                 case IMPORT:
-                    return !FluidUtil.tryFluidTransfer(this.tank, iFluidHandler, 1, false).isEmpty();
+                    return TransferUtil.insertFluid(tank, iFluidHandler.stack(1)) != 0;
                 case EXPORT:
-                    return !FluidUtil.tryFluidTransfer(iFluidHandler, this.tank, 1, false).isEmpty();
+                    return TransferUtil.extractFluid(tank, iFluidHandler.stack(1)) != 0;
                 default:
                     return false;
             }

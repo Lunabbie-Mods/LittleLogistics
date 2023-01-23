@@ -33,7 +33,7 @@ import java.util.Random;
 
 public class SteamLocomotiveEntity extends AbstractLocomotiveEntity implements ItemHandlerVanillaContainerWrapper, WorldlyContainer {
     private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    private final LazyOptional<ItemStackHandler> handler = LazyOptional.of(() -> itemHandler);
     private static final int FURNACE_FUEL_MULTIPLIER= ShippingConfig.Server.STEAM_LOCO_FUEL_MULTIPLIER.get();
 
     protected int burnTime = 0;
@@ -135,15 +135,15 @@ public class SteamLocomotiveEntity extends AbstractLocomotiveEntity implements I
         super.remove(r);
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+//        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//            return handler.cast();
+//        }
+//
+//        return super.getCapability(cap, side);
+//    }
 
     public SteamLocomotiveEntity(EntityType<?> type, Level p_38088_) {
         super(type, p_38088_);

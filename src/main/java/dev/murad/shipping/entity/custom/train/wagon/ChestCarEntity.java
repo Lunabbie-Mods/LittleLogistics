@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
 
 public class ChestCarEntity extends AbstractWagonEntity implements ItemHandlerVanillaContainerWrapper, WorldlyContainer, MenuProvider {
     protected final ItemStackHandler itemHandler = createHandler();
-    protected final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    protected final LazyOptional<ItemStackHandler> handler = LazyOptional.of(() -> itemHandler);
     public ChestCarEntity(EntityType<ChestCarEntity> p_38087_, Level p_38088_) {
         super(p_38087_, p_38088_);
     }
@@ -93,15 +93,15 @@ public class ChestCarEntity extends AbstractWagonEntity implements ItemHandlerVa
         itemHandler.deserializeNBT(t.getCompound("inv"));
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+//        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//            return handler.cast();
+//        }
+//
+//        return super.getCapability(cap, side);
+//    }
 
     // hack to disable hoppers before docking complete
 

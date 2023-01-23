@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 public class SteamTugEntity extends AbstractTugEntity {
     private static final int FURNACE_FUEL_MULTIPLIER= ShippingConfig.Server.STEAM_TUG_FUEL_MULTIPLIER.get();
     private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    private final LazyOptional<ItemStackHandler> handler = LazyOptional.of(() -> itemHandler);
     protected int burnTime = 0;
     protected int burnCapacity = 0;
 
@@ -103,15 +103,15 @@ public class SteamTugEntity extends AbstractTugEntity {
                 .build();
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+//        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//            return handler.cast();
+//        }
+//
+//        return super.getCapability(cap, side);
+//    }
 
     @Override
     protected boolean tickFuel() {
