@@ -5,10 +5,11 @@ import net.minecraft.world.inventory.ContainerData;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.IntSupplier;
+import java.util.function.LongSupplier;
 import java.util.function.Supplier;
 
 public class EnergyHeadVehicleDataAccessor extends HeadVehicleDataAccessor {
-    private static final int SHORT_MASK = 0xFFFF;
+    private static final long SHORT_MASK = 0xFFFF;
     
     public EnergyHeadVehicleDataAccessor(ContainerData data) {
         super(data);
@@ -19,14 +20,14 @@ public class EnergyHeadVehicleDataAccessor extends HeadVehicleDataAccessor {
      */
 
     public long getEnergy() {
-        int lo = this.data.get(15) & SHORT_MASK;
-        int hi = this.data.get(16) & SHORT_MASK;
+        long lo = this.data.get(15) & SHORT_MASK;
+        long hi = this.data.get(16) & SHORT_MASK;
         return lo | hi << 16;
     }
 
     public long getCapacity() {
-        int lo = this.data.get(17) & SHORT_MASK;
-        int hi = this.data.get(18) & SHORT_MASK;
+        long lo = this.data.get(17) & SHORT_MASK;
+        long hi = this.data.get(18) & SHORT_MASK;
         return lo | hi << 16;
     }
 
@@ -35,15 +36,15 @@ public class EnergyHeadVehicleDataAccessor extends HeadVehicleDataAccessor {
             this.arr = new SupplierIntArray(20);
         }
 
-        public Builder withEnergy(IntSupplier energy) {
-            this.arr.setSupplier(15, () -> energy.getAsInt() & SHORT_MASK);
-            this.arr.setSupplier(16, () -> (energy.getAsInt() >> 16) & SHORT_MASK);
+        public Builder withEnergy(LongSupplier energy) {
+            this.arr.setSupplier(15, () -> Math.toIntExact(energy.getAsLong() & SHORT_MASK));
+            this.arr.setSupplier(16, () -> Math.toIntExact((energy.getAsLong() >> 16) & SHORT_MASK));
             return this;
         }
 
-        public Builder withCapacity(IntSupplier capacity) {
-            this.arr.setSupplier(17, () -> capacity.getAsInt() & SHORT_MASK);
-            this.arr.setSupplier(18, () -> (capacity.getAsInt() >> 16) & SHORT_MASK);
+        public Builder withCapacity(LongSupplier capacity) {
+            this.arr.setSupplier(17, () -> Math.toIntExact(capacity.getAsLong() & SHORT_MASK));
+            this.arr.setSupplier(18, () -> Math.toIntExact((capacity.getAsLong() >> 16) & SHORT_MASK));
             return this;
         }
 

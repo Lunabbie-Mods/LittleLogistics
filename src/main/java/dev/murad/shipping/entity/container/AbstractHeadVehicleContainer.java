@@ -65,7 +65,8 @@ public abstract class AbstractHeadVehicleContainer<T extends HeadVehicleDataAcce
     }
 
     public void enroll(){
-        VehiclePacketHandler.INSTANCE.sendToServer(new EnrollVehiclePacket(entity.getId()));
+        // TODO
+        // VehiclePacketHandler.INSTANCE.sendToServer(new EnrollVehiclePacket(entity.getId()));
     }
 
     public String getOwner(){

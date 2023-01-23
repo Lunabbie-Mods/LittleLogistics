@@ -1,6 +1,7 @@
 package dev.murad.shipping.util;
 
 import dev.murad.shipping.component.StallingComponent;
+import dev.murad.shipping.setup.ModComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -51,7 +52,7 @@ public class LinkingHandler<T extends Entity & LinkableEntity<T>> {
                 waitForDominated = false;
                 stallNonTicking();
             } else if (waitForDominated) {
-                entity.getCapability(StallingComponent.STALLING_CAPABILITY).ifPresent(StallingComponent::stall);
+                entity.getComponent(ModComponents.STALLING).stall();
             }
             entity.getEntityData().set(dominantID, dominant.map(Entity::getId).orElse(-1));
             entity.getEntityData().set(dominatedID, dominated.map(Entity::getId).orElse(-1));

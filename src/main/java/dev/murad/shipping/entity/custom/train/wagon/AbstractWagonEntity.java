@@ -3,8 +3,10 @@ package dev.murad.shipping.entity.custom.train.wagon;
 import dev.murad.shipping.component.StallingComponent;
 import dev.murad.shipping.entity.custom.train.AbstractTrainCarEntity;
 import dev.murad.shipping.entity.custom.train.locomotive.AbstractLocomotiveEntity;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.util.Train;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -85,6 +87,16 @@ public abstract class AbstractWagonEntity extends AbstractTrainCarEntity {
 
     private final StallingComponent capability = new StallingComponent() {
         @Override
+        public void readFromNbt(CompoundTag tag) {
+
+        }
+
+        @Override
+        public void writeToNbt(CompoundTag tag) {
+
+        }
+
+        @Override
         public boolean isDocked() {
             return delegate().map(StallingComponent::isDocked).orElse(false);
         }
@@ -131,20 +143,20 @@ public abstract class AbstractWagonEntity extends AbstractTrainCarEntity {
 
         private Optional<StallingComponent> delegate() {
             if (linkingHandler.train.getHead() instanceof AbstractLocomotiveEntity e) {
-                return e.getCapability(StallingComponent.STALLING_CAPABILITY).resolve();
+                return Optional.of(e.getComponent(ModComponents.STALLING));
             }
             return Optional.empty();
         }
     };
 
-    private final LazyOptional<StallingComponent> capabilityOpt = LazyOptional.of(() -> capability);
+    //private final LazyOptional<StallingComponent> capabilityOpt = LazyOptional.of(() -> capability);
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
-        if (cap == StallingComponent.STALLING_CAPABILITY) {
-            return capabilityOpt.cast();
-        }
-        return super.getCapability(cap);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+//        if (cap == StallingComponent.STALLING_CAPABILITY) {
+//            return capabilityOpt.cast();
+//        }
+//        return super.getCapability(cap);
+//    }
 }

@@ -27,12 +27,12 @@ public interface IVesselLoader {
             return Optional.empty();
         } else {
             Entity entity = fluidEntities.get(0);
-            return entity.getCapability(component).resolve();
+            return Optional.of(entity.getComponent(component));
         }
     }
 
     static boolean entityPredicate(Entity entity, BlockPos pos, ComponentKey<?> component) {
-        return entity.getComponent(component).map(cap -> {
+        return Optional.of(entity.getComponent(component)).map(cap -> {
             if (entity instanceof LinkableEntity l){
                 return l.allowDockInterface() && (l.getBlockPos().getX() == pos.getX() && l.getBlockPos().getZ() == pos.getZ());
             } else {

@@ -8,6 +8,7 @@ import dev.murad.shipping.setup.ModTileEntitiesTypes;
 import dev.murad.shipping.util.LinkableEntity;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -62,8 +63,8 @@ public class VesselChargerTileEntity extends BlockEntity implements IVesselLoade
     private boolean tryChargeEntity() {
         return IVesselLoader.getEntityComponent(getBlockPos().relative(getBlockState().getValue(VesselChargerBlock.FACING)),
                 ModComponents.ENERGY, level).map(iEnergyStorage -> {
-                    int vesselCap = iEnergyStorage.receiveEnergy(MAX_TRANSFER, true);
-                    int toTransfer = internalBattery.extract(vesselCap);
+                    long vesselCap = iEnergyStorage.receiveEnergy(MAX_TRANSFER, true);
+                    long toTransfer = internalBattery.extract(vesselCap, Transaction.openOuter());
                     return iEnergyStorage.receiveEnergy(toTransfer, false) > 0;
         }).orElse(false);
     }

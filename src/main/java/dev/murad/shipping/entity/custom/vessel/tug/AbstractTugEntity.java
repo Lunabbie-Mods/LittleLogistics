@@ -19,6 +19,8 @@ import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandle
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import lombok.Getter;
 import lombok.Setter;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -123,7 +125,7 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
     private ItemStackHandler createRouteItemHandler() {
         return new ItemStackHandler(1) {
             @Override
-            protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
+            protected int getStackLimit(int slot, ItemVariant resource) {
                 return 1;
             }
 
@@ -133,18 +135,18 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
             }
 
             @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return stack.getItem() instanceof TugRouteItem;
+            public boolean isItemValid(int slot, ItemVariant resource) {
+                return resource.getItem() instanceof TugRouteItem;
             }
 
             @Nonnull
             @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!isItemValid(slot, stack)) {
-                    return stack;
+            public long insertSlot(int slot, ItemVariant resource, long maxAmount, TransactionContext transaction) {
+                if (!isItemValid(slot, resource)) {
+                    return 0;
                 }
 
-                return super.insertItem(slot, stack, simulate);
+                return super.insertSlot(slot, resource, maxAmount, transaction);
             }
         };
     }
@@ -300,8 +302,8 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!player.level.isClientSide()) {
-
-            NetworkHooks.openScreen((ServerPlayer) player, createContainerProvider(), getDataAccessor()::write);
+            // TODO
+            // NetworkHooks.openScreen((ServerPlayer) player, createContainerProvider(), getDataAccessor()::write);
         }
         return InteractionResult.CONSUME;
     }
@@ -346,16 +348,17 @@ public abstract class AbstractTugEntity extends VesselEntity implements Linkable
         }
     }
 
-    @Override
-    public boolean isMultipartEntity() {
-        return true;
-    }
-
-    @Override
-    public PartEntity<?>[] getParts()
-    {
-        return new PartEntity<?>[]{frontHitbox};
-    }
+    // TODO
+//    @Override
+//    public boolean isMultipartEntity() {
+//        return true;
+//    }
+//
+//    @Override
+//    public PartEntity<?>[] getParts()
+//    {
+//        return new PartEntity<?>[]{frontHitbox};
+//    }
 
     @Override
     public void aiStep(){

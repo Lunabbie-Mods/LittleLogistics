@@ -221,8 +221,9 @@ public class SwitchRail extends BaseRailBlock implements MultiShapeRail {
         }
     }
 
-    @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @javax.annotation.Nullable Direction side) {
-        return true;
-    }
+    // TODO
+//    @Override
+//    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, @javax.annotation.Nullable Direction side) {
+//        return true;
+//    }
 }

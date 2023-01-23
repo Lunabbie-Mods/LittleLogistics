@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import dev.murad.shipping.ShippingConfig;
 import dev.murad.shipping.component.StallingComponent;
 import dev.murad.shipping.entity.custom.train.locomotive.AbstractLocomotiveEntity;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.LinkableEntity;
 import dev.murad.shipping.util.LinkingHandler;
@@ -220,7 +221,7 @@ public abstract class AbstractTrainCarEntity extends AbstractMinecart implements
         if (!this.level.isClientSide) {
             // not perfect, doesn't work when a mob stand in the way without moving, but works well enough underwater to keep this
             if (pEntity instanceof LivingEntity l && l.getVehicle() == null){
-                this.getCapability(StallingComponent.STALLING_CAPABILITY).ifPresent(StallingComponent::stall);
+                this.getComponent(ModComponents.STALLING).stall();
             }
             if (!pEntity.noPhysics && !this.noPhysics) {
                 // fix carts with passengers falling behind

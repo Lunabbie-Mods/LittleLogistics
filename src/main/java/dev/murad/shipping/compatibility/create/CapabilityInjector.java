@@ -4,6 +4,9 @@ import com.simibubi.create.content.contraptions.components.structureMovement.tra
 import com.simibubi.create.content.contraptions.components.structureMovement.train.capability.MinecartController;
 import dev.murad.shipping.component.StallingComponent;
 import dev.murad.shipping.entity.custom.train.wagon.SeaterCarEntity;
+import dev.murad.shipping.setup.ModComponents;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +18,7 @@ public class CapabilityInjector {
 
         public TrainCarController(SeaterCarEntity entity) {
             super(entity);
-            stallingCapability = entity == null ? LazyOptional.empty() : entity.getCapability(StallingComponent.STALLING_CAPABILITY);
+            stallingCapability = entity == null ? LazyOptional.empty() : LazyOptional.ofObject(entity.getComponent(ModComponents.STALLING));
         }
 
         public boolean isStalled() {
@@ -41,7 +44,9 @@ public class CapabilityInjector {
         return LazyOptional.of(() -> new TrainCarController(entity));
     }
 
-    public static <T> boolean isMinecartControllerCapability(@NotNull Capability<T> cap) {
-        return cap == CapabilityMinecartController.MINECART_CONTROLLER_CAPABILITY;
+    public static <T extends Component> boolean isMinecartControllerComponent(@NotNull ComponentKey<T> cap) {
+        // TODO
+        // return cap == CapabilityMinecartController.MINECART_CONTROLLER_CAPABILITY;
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package dev.murad.shipping.util;
 
-import dev.murad.shipping.entity.custom.vessel.tug.AbstractTugEntity;
+import dev.murad.shipping.component.EnergyComponent;
+import dev.murad.shipping.setup.ModComponents;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import net.minecraft.world.Container;
@@ -45,7 +46,7 @@ public class InventoryUtils {
                 }
             } else if (!airList.isEmpty() && target instanceof Entity){
                 Entity e = (Entity) target;
-                boolean validSlot = e.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                boolean validSlot = Optional.of(e.getComponent(ModComponents.ITEM_HANDLER))
                         .map(itemHandler -> airList.stream()
                                 .map(j -> itemHandler.isItemValid(j, stack))
                                 .reduce(false, Boolean::logicalOr)).orElse(true);
@@ -86,12 +87,12 @@ public class InventoryUtils {
     }
 
     @Nullable
-    public static EnergyStorage getEnergyCapabilityInSlot(int slot, ItemStackHandler handler) {
+    public static EnergyComponent getEnergyComponentInSlot(int slot, ItemStackHandler handler) {
         ItemStack stack = handler.getStackInSlot(slot);
         if (!stack.isEmpty()) {
-            LazyOptional<EnergyStorage> capabilityLazyOpt = stack.getCapability(CapabilityEnergy.ENERGY);
+            LazyOptional<EnergyComponent> capabilityLazyOpt = stack.getComponent(ModComponents.ENERGY);
             if (capabilityLazyOpt.isPresent()) {
-                Optional<EnergyStorage> capabilityOpt = capabilityLazyOpt.resolve();
+                Optional<EnergyComponent> capabilityOpt = capabilityLazyOpt.resolve();
                 if (capabilityOpt.isPresent()) {
                     return capabilityOpt.get();
                 }

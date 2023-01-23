@@ -184,14 +184,14 @@ public abstract class AbstractBargeEntity extends VesselEntity {
         return Optional.empty();
     }
 
-    private final LazyOptional<StallingComponent> capabilityOpt = LazyOptional.of(() -> capability);
+    //private final LazyOptional<StallingComponent> capabilityOpt = LazyOptional.of(() -> capability);
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
-        if (cap == StallingComponent.STALLING_CAPABILITY) {
-            return capabilityOpt.cast();
-        }
-        return super.getCapability(cap);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+//        if (cap == StallingComponent.STALLING_CAPABILITY) {
+//            return capabilityOpt.cast();
+//        }
+//        return super.getCapability(cap);
+//    }
 }

@@ -1,6 +1,7 @@
 package dev.murad.shipping.entity.custom.vessel.tug;
 
 import dev.murad.shipping.ShippingConfig;
+import dev.murad.shipping.component.EnergyComponent;
 import dev.murad.shipping.component.ReadWriteEnergyStorage;
 import dev.murad.shipping.entity.accessor.EnergyHeadVehicleDataAccessor;
 import dev.murad.shipping.entity.container.EnergyHeadVehicleContainer;
@@ -8,8 +9,9 @@ import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.InventoryUtils;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
-import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
-import net.minecraft.core.Direction;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 
@@ -29,13 +31,13 @@ import javax.annotation.Nullable;
 
 public class EnergyTugEntity extends AbstractTugEntity {
     private final ItemStackHandler itemHandler = createHandler();
-    private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
+    //private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> itemHandler);
     private static final int MAX_ENERGY = ShippingConfig.Server.ENERGY_TUG_BASE_CAPACITY.get();
     private static final int MAX_TRANSFER = ShippingConfig.Server.ENERGY_TUG_BASE_MAX_CHARGE_RATE.get();
     private static final int ENERGY_USAGE = ShippingConfig.Server.ENERGY_TUG_BASE_ENERGY_USAGE.get();
 
     private final ReadWriteEnergyStorage internalBattery = new ReadWriteEnergyStorage(MAX_ENERGY, MAX_TRANSFER, Integer.MAX_VALUE);
-    private final LazyOptional<IEnergyStorage> holder = LazyOptional.of(() -> internalBattery);
+    //private final LazyOptional<IEnergyStorage> holder = LazyOptional.of(() -> internalBattery);
 
     public EnergyTugEntity(EntityType<? extends WaterAnimal> type, Level world) {
         super(type, world);
@@ -72,18 +74,20 @@ public class EnergyTugEntity extends AbstractTugEntity {
     private ItemStackHandler createHandler() {
         return new ItemStackHandler(1) {
             @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
+            public boolean isItemValid(int slot, ItemVariant resource) {
+                // TODO
+                //return resource.getComponent(ModComponents.ENERGY).isPresent();
+                return true;
             }
 
             @Nonnull
             @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!isItemValid(slot, stack)) {
-                    return stack;
+            public long insertSlot(int slot, ItemVariant resource, long maxAmount, TransactionContext transaction) {
+                if (!isItemValid(slot, resource)) {
+                    return 0;
                 }
 
-                return super.insertItem(slot, stack, simulate);
+                return super.insertSlot(slot, resource, maxAmount, transaction);
             }
         };
     }
@@ -140,12 +144,12 @@ public class EnergyTugEntity extends AbstractTugEntity {
     public void tick() {
         // grab energy from capacitor
         if (!level.isClientSide) {
-            EnergyStorage capability = InventoryUtils.getEnergyCapabilityInSlot(0, itemHandler);
-            if (capability != null) {
+            EnergyComponent component = InventoryUtils.getEnergyComponentInSlot(0, itemHandler);
+            if (component != null) {
                 // simulate first
-                int toExtract = capability.extract(MAX_TRANSFER, true);
-                toExtract = internalBattery.insert(toExtract, false);
-                capability.insert(toExtract, false);
+                long toExtract = component.extract(MAX_TRANSFER, Transaction.openOuter());
+                toExtract = internalBattery.insert(toExtract, Transaction.openOuter());
+                component.insert(toExtract, Transaction.openOuter());
             }
         }
 
@@ -154,7 +158,7 @@ public class EnergyTugEntity extends AbstractTugEntity {
 
     @Override
     protected boolean tickFuel() {
-        return internalBattery.extract(ENERGY_USAGE, false) > 0;
+        return internalBattery.extract(ENERGY_USAGE, Transaction.openOuter()) > 0;
     }
 
     @Override
@@ -170,26 +174,26 @@ public class EnergyTugEntity extends AbstractTugEntity {
 
     @Override
     public void setItem(int p_70299_1_, ItemStack p_70299_2_) {
-        if (!this.itemHandler.isItemValid(p_70299_1_, p_70299_2_)){
+        if (!this.itemHandler.isItemValid(p_70299_1_, ItemVariant.of(p_70299_2_))){
             return;
         }
-        this.itemHandler.insertItem(p_70299_1_, p_70299_2_, false);
+        this.itemHandler.insertSlot(p_70299_1_, ItemVariant.of(p_70299_2_), this.getMaxStackSize(), Transaction.openOuter());
         if (!p_70299_2_.isEmpty() && p_70299_2_.getCount() > this.getMaxStackSize()) {
             p_70299_2_.setCount(this.getMaxStackSize());
         }
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityEnergy.ENERGY) {
-            return holder.cast();
-        }
-
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+//        if (cap == CapabilityEnergy.ENERGY) {
+//            return holder.cast();
+//        }
+//
+//        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//            return handler.cast();
+//        }
+//
+//        return super.getCapability(cap, side);
+//    }
 }

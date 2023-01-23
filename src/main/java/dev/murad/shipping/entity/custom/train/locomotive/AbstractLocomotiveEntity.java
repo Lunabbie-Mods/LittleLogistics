@@ -11,6 +11,7 @@ import dev.murad.shipping.entity.custom.vessel.tug.VehicleFrontPart;
 import dev.murad.shipping.entity.navigation.LocomotiveNavigator;
 import dev.murad.shipping.item.LocoRouteItem;
 import dev.murad.shipping.setup.ModBlocks;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.setup.ModSounds;
 import dev.murad.shipping.util.*;
@@ -19,6 +20,8 @@ import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandle
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
 import lombok.Getter;
 import lombok.Setter;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +30,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -127,7 +129,8 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
             return InteractionResult.PASS;
         }
         if(!this.level.isClientSide){
-            NetworkHooks.openScreen((ServerPlayer) pPlayer, createContainerProvider(), getDataAccessor()::write);
+            // TODO
+            // NetworkHooks.openScreen((ServerPlayer) pPlayer, createContainerProvider(), getDataAccessor()::write);
 
         }
 
@@ -137,7 +140,7 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
     private ItemStackHandler createLocoRouteItemHandler() {
         return new ItemStackHandler(1) {
             @Override
-            protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
+            protected int getStackLimit(int slot, ItemVariant resource) {
                 return 1;
             }
 
@@ -147,18 +150,18 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
             }
 
             @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return stack.getItem() instanceof LocoRouteItem;
+            public boolean isItemValid(int slot, ItemVariant resource) {
+                return resource.getItem() instanceof LocoRouteItem;
             }
 
             @Nonnull
             @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!isItemValid(slot, stack)) {
-                    return stack;
+            public long insertSlot(int slot, ItemVariant resource, long maxAmount, TransactionContext transaction) {
+                if (!isItemValid(slot, resource)) {
+                    return 0;
                 }
 
-                return super.insertItem(slot, stack, simulate);
+                return super.insertSlot(slot, resource, maxAmount, transaction);
             }
         };
     }
@@ -342,22 +345,23 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
         }).isEmpty();
     }
 
-    @Override
-    public PartEntity<?>[] getParts()
-    {
-        return new PartEntity<?>[]{frontHitbox};
-    }
-
-    @Override
-    public boolean isMultipartEntity()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isPoweredCart() {
-        return true;
-    }
+    // TODO
+//    @Override
+//    public PartEntity<?>[] getParts()
+//    {
+//        return new PartEntity<?>[]{frontHitbox};
+//    }
+//
+//    @Override
+//    public boolean isMultipartEntity()
+//    {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isPoweredCart() {
+//        return true;
+//    }
 
     @Override
     public void recreateFromPacket(ClientboundAddEntityPacket p_149572_) {
@@ -375,7 +379,7 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
     }
 
     private void tickDockCheck() {
-        getCapability(StallingComponent.STALLING_CAPABILITY).ifPresent(cap -> {
+        var cap = getComponent(ModComponents.STALLING); //.ifPresent(cap -> {
             int x = (int) Math.floor(this.getX());
             int y = (int) Math.floor(this.getY());
             int z = (int) Math.floor(this.getZ());
@@ -419,7 +423,7 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
 
             if (changedDock) onDock();
             if (changedUndock) onUndock();
-        });
+        //});
 
     }
 
@@ -509,6 +513,16 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
 
     protected final StallingComponent stalling = new StallingComponent() {
         @Override
+        public void readFromNbt(CompoundTag tag) {
+            // TODO
+        }
+
+        @Override
+        public void writeToNbt(CompoundTag tag) {
+            // TODO
+        }
+
+        @Override
         public boolean isDocked() {
             return docked;
         }
@@ -559,14 +573,14 @@ public abstract class AbstractLocomotiveEntity extends AbstractTrainCarEntity im
     // cache for best performance
     private final LazyOptional<StallingComponent> stallingOpt = LazyOptional.of(() -> stalling);
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
-        if (cap == StallingComponent.STALLING_CAPABILITY) {
-            return stallingOpt.cast();
-        }
-        return super.getCapability(cap);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap) {
+//        if (cap == StallingComponent.STALLING_CAPABILITY) {
+//            return stallingOpt.cast();
+//        }
+//        return super.getCapability(cap);
+//    }
 
     private void updateNavigatorFromItem() {
         ItemStack stack = routeItemHandler.getStackInSlot(0);

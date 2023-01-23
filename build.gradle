@@ -94,7 +94,9 @@ dependencies {
 
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-api:${cca_version}"
 
-    modImplementation "com.simibubi.create:create-fabric-${minecraft_version}:${create_version}"
+    modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_version}") {
+        exclude(group: "curse.maven")
+    }
 }
 
 processResources {

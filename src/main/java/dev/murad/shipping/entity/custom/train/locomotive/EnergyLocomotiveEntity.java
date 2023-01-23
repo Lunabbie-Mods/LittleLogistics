@@ -1,15 +1,20 @@
 package dev.murad.shipping.entity.custom.train.locomotive;
 
 import dev.murad.shipping.ShippingConfig;
+import dev.murad.shipping.component.EnergyComponent;
 import dev.murad.shipping.component.ReadWriteEnergyStorage;
 import dev.murad.shipping.entity.accessor.EnergyHeadVehicleDataAccessor;
 import dev.murad.shipping.entity.container.EnergyHeadVehicleContainer;
+import dev.murad.shipping.setup.ModComponents;
 import dev.murad.shipping.setup.ModEntityTypes;
 import dev.murad.shipping.setup.ModItems;
 import dev.murad.shipping.util.InventoryUtils;
 import dev.murad.shipping.util.ItemHandlerVanillaContainerWrapper;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandler;
 import io.github.fabricators_of_create.porting_lib.util.LazyOptional;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -50,33 +55,33 @@ public class EnergyLocomotiveEntity extends AbstractLocomotiveEntity implements 
     private ItemStackHandler createHandler() {
         return new ItemStackHandler(1) {
             @Override
-            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-                return stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
+            public boolean isItemValid(int slot, ItemVariant resource) {
+                return resource.getComponent(ModComponents.ENERGY).isPresent();
             }
 
             @Nonnull
             @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                if (!isItemValid(slot, stack)) {
-                    return stack;
+            public long insertSlot(int slot, ItemVariant resource, long maxAmount, TransactionContext transaction) {
+                if (!isItemValid(slot, resource)) {
+                    return 0;
                 }
 
-                return super.insertItem(slot, stack, simulate);
+                return super.insertSlot(slot, resource, maxAmount, transaction);
             }
         };
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return handler.cast();
-        } else if (cap == CapabilityEnergy.ENERGY) {
-            return holder.cast();
-        }
-
-        return super.getCapability(cap, side);
-    }
+//    @Nonnull
+//    @Override
+//    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+//        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//            return handler.cast();
+//        } else if (cap == CapabilityEnergy.ENERGY) {
+//            return holder.cast();
+//        }
+//
+//        return super.getCapability(cap, side);
+//    }
 
     @Override
     public void remove(RemovalReason r) {
@@ -120,12 +125,12 @@ public class EnergyLocomotiveEntity extends AbstractLocomotiveEntity implements 
     public void tick() {
         // grab energy from capacitor
         if (!level.isClientSide) {
-            IEnergyStorage capability = InventoryUtils.getEnergyCapabilityInSlot(0, itemHandler);
-            if (capability != null) {
+            EnergyComponent component = InventoryUtils.getEnergyComponentInSlot(0, itemHandler);
+            if (component != null) {
                 // simulate first
-                int toExtract = capability.extractEnergy(MAX_TRANSFER, true);
-                toExtract = internalBattery.insert(toExtract, false);
-                capability.extractEnergy(toExtract, false);
+                long toExtract = component.extract(MAX_TRANSFER, Transaction.openOuter());
+                toExtract = internalBattery.insert(toExtract, Transaction.openOuter());
+                component.extract(toExtract, Transaction.openOuter());
             }
         }
 
@@ -134,7 +139,7 @@ public class EnergyLocomotiveEntity extends AbstractLocomotiveEntity implements 
 
     @Override
     protected boolean tickFuel() {
-        return internalBattery.extract(ENERGY_USAGE, false) > 0;
+        return internalBattery.extract(ENERGY_USAGE, Transaction.openOuter()) > 0;
     }
 
 
